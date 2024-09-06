@@ -33,7 +33,7 @@ const CategoryTable: React.FC = () => {
       title: 'Name',
       key: 'name',
       dataIndex: 'name',
-      
+
     },
     {
       title: 'Description',
@@ -41,11 +41,11 @@ const CategoryTable: React.FC = () => {
       key: 'description',
     },
 
-        {
+    {
       title: 'Date',
       key: 'date',
       dataIndex: 'creationTime',
-      render: (date:string ) => <span> {date.slice(0,10)}</span>
+      render: (date: string) => <span> {date.slice(0, 10)}</span>
     },
     {
       title: 'Actions',
@@ -64,12 +64,12 @@ const CategoryTable: React.FC = () => {
     })()
   }, [pagination]);
 
-  const getData = async()=>{
+  const getData = async () => {
     const result = await categoryService.get(pagination.page, pagination.pageSize)
-    if (result.status == 200 ) {
-      if(result.data.categoryList.length === 0 && pagination.page > 1){
+    if (result.status == 200) {
+      if (result.data.categoryList.length === 0 && pagination.page > 1) {
         const newPage = pagination.page - 1;
-        setPagination({...pagination,page:newPage})
+        setPagination({ ...pagination, page: newPage })
         return
       }
       setData(result.data.categoryList)
@@ -102,8 +102,9 @@ const CategoryTable: React.FC = () => {
       <Divider />
       <Table
         columns={columns}
-        dataSource={data} />
-      { total > 0 &&
+        dataSource={data}
+        rowKey="id" />
+      {total > 0 &&
         <Pagination
           align="center"
           showSizeChanger
