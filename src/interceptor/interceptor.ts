@@ -1,8 +1,9 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { message } from 'antd'
+import { APP_ENV } from '../env';
 
 
-axios.defaults.baseURL = import.meta.env.VITE_APP_SERVER_HOST
+axios.defaults.baseURL = APP_ENV.SERVER_HOST
 export const SetupInterceptors = () => {
     axios.interceptors.request.use(
         async (config: InternalAxiosRequestConfig) => {

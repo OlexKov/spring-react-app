@@ -4,9 +4,10 @@ import { ICategory } from '../../models/ICategory';
 import { Link, useNavigate } from 'react-router-dom';
 import { paginatorConfig } from '../../../helpers/constants';
 import { categoryService } from '../../../services/categoryService';
+import { APP_ENV } from '../../../env';
 
 
-const imageFolder = `${import.meta.env.VITE_APP_SERVER_HOST}${import.meta.env.VITE_APP_IMAGES_FOLDER}`
+const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
 interface PagintionData {
   page: number,
   pageSize: number
@@ -59,9 +60,7 @@ const CategoryTable: React.FC = () => {
   ];
 
   useEffect(() => {
-    (async () => {
-      await getData();
-    })()
+    (async () => { await getData() })()
   }, [pagination]);
 
   const getData = async () => {
@@ -119,9 +118,6 @@ const CategoryTable: React.FC = () => {
           className='mt-4' />
       }
     </div>
-
-
-
   )
 }
 

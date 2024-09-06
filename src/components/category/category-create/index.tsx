@@ -6,6 +6,7 @@ import { categoryService } from '../../../services/categoryService';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'antd/es/form/Form';
 import { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
+import { APP_ENV } from '../../../env';
 
 const CategoryCreation: React.FC = () => {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ const CategoryCreation: React.FC = () => {
                             uid: '-1',
                             name: 'image.png',
                             status: 'done',
-                            url: `${import.meta.env.VITE_APP_SERVER_HOST}${import.meta.env.VITE_APP_IMAGES_FOLDER}/300_${result.data.image}`
+                            url: `${APP_ENV.SERVER_HOST}${APP_ENV.FILES_FOLDER}/300_${result.data.image}`
                         }] 
                     })
                 }
