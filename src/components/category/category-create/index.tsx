@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button,  Divider, Form, Input, message, Space, Upload } from 'antd'
-import React, { useEffect} from 'react'
+import { Button,  Divider, Form, Input, message, Modal, Space, Upload } from 'antd'
+import React, { useEffect, useState} from 'react'
 import { PlusOutlined } from '@ant-design/icons';
 import { categoryService } from '../../../services/categoryService';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'antd/es/form/Form';
+import { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 
 const CategoryCreation: React.FC = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [form] = useForm();
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
  
     useEffect(()=>{
         const id = searchParams.get("id")
@@ -52,8 +56,6 @@ const CategoryCreation: React.FC = () => {
 
 
     const onFinish = async (formData: any) => {
-        formData.file = formData.file[0].originFileObj;
-        console.log(formData)
         if(!formData.id){
             const result = await categoryService.create(formData);
             if(result.status == 200){
@@ -70,14 +72,7 @@ const CategoryCreation: React.FC = () => {
         }
         
     };
-
    
-    const normFile = (e: any) => {
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e?.fileList;
-    };
     return (
         <>
             <div className='w-75 mx-auto'>
@@ -94,14 +89,27 @@ const CategoryCreation: React.FC = () => {
                 >
                     <Form.Item
                         label="Image"
-                        valuePropName="fileList"
+                        valuePropName="file"
                         name="file"
-                        getValueFromEvent={normFile}
+                        getValueFromEvent={(e: UploadChangeParam) => {
+                            const image = e?.fileList[0] as any;
+                            return image?.originFileObj;
+                        }}
                         rules={[{ required: true }]}>
                         <Upload
                             listType="picture-card"
                             accept="image/png, image/jpeg, image/webp"
                             maxCount={1}
+                            beforeUpload={() => false}
+                            onPreview={(file: UploadFile) => {
+                                if (!file.url && !file.preview) {
+                                    file.preview = URL.createObjectURL(file.originFileObj as RcFile);
+                                }
+
+                                setPreviewImage(file.url || (file.preview as string));
+                                setPreviewOpen(true);
+                                setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+                            }}
                         >
                             <button style={{ border: 0, padding: 0, background: 'transparent' }} type="button" />
                             <div className='d-flex flex-column align-items-center'>
@@ -136,7 +144,9 @@ const CategoryCreation: React.FC = () => {
                     </Form.Item>
                 </Form>
             </div>
-
+            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={() => setPreviewOpen(false)}>
+                <img alt="example" style={{width: '100%'}} src={previewImage}/>
+            </Modal>
         </>
 
     )
