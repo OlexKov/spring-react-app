@@ -33,7 +33,7 @@ const CategoryTable: React.FC = () => {
       title: 'Name',
       key: 'name',
       dataIndex: 'name',
-
+      
     },
     {
       title: 'Description',
@@ -45,7 +45,7 @@ const CategoryTable: React.FC = () => {
       title: 'Date',
       key: 'date',
       dataIndex: 'creationTime',
-
+      render: (date:string ) => <span> {date.slice(0,10)}</span>
     },
     {
       title: 'Actions',
