@@ -66,9 +66,16 @@ const CategoryTable: React.FC = () => {
 
   const getData = async()=>{
     const result = await categoryService.get(pagination.page, pagination.pageSize)
-    if (result.status == 200 && result.data.totalElements > 0) {
-      setData(result.data.categoryList)
-      setTotal(result.data.totalElements)
+    if (result.status == 200 ) {
+      if(result.data.categoryList.length > 0){
+        setData(result.data.categoryList)
+        setTotal(result.data.totalElements)
+      }
+      else if(pagination.page > 1){
+        const newPage = pagination.page-1;
+        setPagination({...pagination,page:newPage})
+        getData()
+      }
     }
   }
 
@@ -98,7 +105,7 @@ const CategoryTable: React.FC = () => {
       <Table
         columns={columns}
         dataSource={data} />
-      {data && data.length > 0 &&
+      { total > 0 &&
         <Pagination
           align="center"
           showSizeChanger
