@@ -28,9 +28,9 @@ const CategoryCreation: React.FC = () => {
                         description: result.data.description,
                         file: [{
                             uid: '-1',
-                            name: 'image.png',
+                            name: `Image`,
                             status: 'done',
-                            url: `${APP_ENV.SERVER_HOST}${APP_ENV.FILES_FOLDER}/300_${result.data.image}`
+                            url: `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}/300_${result.data.image}`
                         }] 
                     })
                 }
