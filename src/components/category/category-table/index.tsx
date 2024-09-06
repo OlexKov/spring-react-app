@@ -60,20 +60,24 @@ const CategoryTable: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await categoryService.get(pagination.page, pagination.pageSize)
-      if (result.status == 200 && result.data.totalElements > 0) {
-        setData(result.data.categoryList)
-        setTotal(result.data.totalElements)
-      }
+      await getData();
     })()
   }, [pagination]);
+
+  const getData = async()=>{
+    const result = await categoryService.get(pagination.page, pagination.pageSize)
+    if (result.status == 200 && result.data.totalElements > 0) {
+      setData(result.data.categoryList)
+      setTotal(result.data.totalElements)
+    }
+  }
 
   const deleteCategory = async (id: number) => {
     const result = await categoryService.delete(id)
     if (result.status == 200) {
       const category = data?.find(x => x.id === id);
       message.success(`Category "${category?.name}" successfully deleted`)
-      setData(data?.filter(x => x.id !== id))
+      await getData();
     }
   }
 
