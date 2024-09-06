@@ -30,15 +30,21 @@ const CategoryTable: React.FC = () => {
       render: (element: ICategory) => <Image alt={`${imageFolder}/150_${element}`} width={100} src={`${imageFolder}/150_${element}`} />
     },
     {
+      title: 'Name',
+      key: 'name',
+      dataIndex: 'name',
+
+    },
+    {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
     },
 
-    {
+        {
       title: 'Date',
       key: 'date',
-      dataIndex: 'date',
+      dataIndex: 'creationTime',
 
     },
     {
