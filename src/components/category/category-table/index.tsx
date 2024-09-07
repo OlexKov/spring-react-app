@@ -66,11 +66,6 @@ const CategoryTable: React.FC = () => {
   const getData = async () => {
     const result = await categoryService.get(pagination.page, pagination.pageSize)
     if (result.status == 200) {
-      if (result.data.categoryList.length === 0 && pagination.page > 1) {
-        const newPage = pagination.page - 1;
-        setPagination({ ...pagination, page: newPage })
-        return
-      }
       setData(result.data.categoryList)
       setTotal(result.data.totalElements)
     }
@@ -81,7 +76,13 @@ const CategoryTable: React.FC = () => {
     if (result.status == 200) {
       const category = data?.find(x => x.id === id);
       message.success(`Category "${category?.name}" successfully deleted`)
-      await getData();
+      if (data?.length === 1 && pagination.page > 1) {
+        const newPage = pagination.page - 1;
+        setPagination({ ...pagination, page: newPage })
+      }
+      else{
+        await getData();
+      }
     }
   }
 
@@ -102,7 +103,9 @@ const CategoryTable: React.FC = () => {
       <Table
         columns={columns}
         dataSource={data}
-        rowKey="id" />
+        rowKey="id"
+        pagination={false}
+         />
       {total > 0 &&
         <Pagination
           align="center"
