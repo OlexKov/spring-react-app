@@ -30,7 +30,8 @@ header {
 
 main {
   padding: 20px 0 20px 0;
-  min-height: 85.3vh;
+  height: 85.3vh;
+  overflow: auto;
 }
 
 footer {
