@@ -1,6 +1,6 @@
 import { Button, Divider, Image, message, Pagination, Space, Table, TableProps } from 'antd';
 import React, { useEffect, useState } from 'react'
-import { ICategory } from '../../models/ICategory';
+import { ICategory } from '../../../models/Category';
 import { Link, useNavigate } from 'react-router-dom';
 import { paginatorConfig } from '../../../helpers/constants';
 import { categoryService } from '../../../services/categoryService';

@@ -6,6 +6,8 @@ import { Route, Routes } from 'react-router-dom';
 import CategoryTable from './components/category/category-table';
 import CategoryCreation from './components/category/category-create';
 import Layout from './components/layout';
+import ProductPage from './components/product';
+import ProductCreate from './components/product/product-create';
 
 
 
@@ -18,6 +20,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<CategoryTable />} />
           <Route path="/create" element={<CategoryCreation />} />
+          <Route path="/products" element={<ProductPage />} />
+          <Route path="/create-product" element={<ProductCreate />} />
           <Route path="*" element={
             <Error
               status="404"
