@@ -66,7 +66,6 @@ const CategoryTable: React.FC = () => {
   const getData = async () => {
     const result = await categoryService.get(pagination.page, pagination.pageSize)
     if (result.status == 200) {
-      console.log(result.data)
       setData(result.data.itemsList)
       setTotal(result.data.totalElements)
     }

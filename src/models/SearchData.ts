@@ -2,7 +2,8 @@ export interface SearchData{
     page:number 
     size:number
     name:string
-    category:string
+    categories:string[] | undefined
     description:string
     sort:string
+    sortDir:string
 }

@@ -1,4 +1,4 @@
-import { Button, Image, message, Pagination, Space, Table, TableProps } from 'antd';
+import { Button, Image, message, Pagination, Space, Table, TableColumnsType, TableProps } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { ICategory } from '../../../models/Category';
 import { useNavigate } from 'react-router-dom';
@@ -8,23 +8,33 @@ import { IProduct } from '../../../models/Product';
 import { productService } from '../../../services/productService';
 import { IProductImage } from '../../../models/ProductImage';
 import { SearchData } from '../../../models/SearchData';
+import { categoryService } from '../../../services/categoryService';
 
+
+
+interface filterData {
+  text: string,
+  value: string
+}
 
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
 const ProductTable: React.FC = () => {
+  const defaultSortTable = "id"
   const navigate = useNavigate();
   const [data, setData] = useState<IProduct[]>()
+  const [filters, setFilters] = useState<filterData[]>([])
   const [search, setSearch] = useState<SearchData>({
     page: paginatorConfig.pagination.defaultCurrent,
     size: paginatorConfig.pagination.defaultPageSize,
     name: '',
     description: '',
-    sort: 'id',
-    category: ''
+    sort: defaultSortTable,
+    categories: undefined,
+    sortDir: ''
   })
   const [total, setTotal] = useState<number>(0)
 
-  const columns: TableProps<IProduct>['columns'] = [
+  const columns: TableColumnsType<IProduct> = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -39,15 +49,19 @@ const ProductTable: React.FC = () => {
 
     {
       title: 'Category',
-      key: 'categoryName',
+      key: 'category',
       dataIndex: 'categoryName',
-
+      showSorterTooltip: { target: 'full-header' },
+      filterSearch: true,
+      filters: filters,
+      filteredValue: search.categories?.length !== 0 ? search.categories : filters.map(x => x.value),
+      sorter: true
     },
     {
       title: 'Name',
       key: 'name',
       dataIndex: 'name',
-
+      sorter: true
     },
     {
       title: 'Description',
@@ -60,19 +74,22 @@ const ProductTable: React.FC = () => {
       key: 'date',
       dataIndex: 'creationTime',
       render: (date: string) => <span> {date.slice(0, 10)}</span>,
-      width: 110
+      width: 110,
+      sorter: true
     },
     {
       title: 'Price',
       key: 'price',
       dataIndex: 'price',
-      render: (price: number) => <span> {price.toPrecision(4)}</span>
+      render: (price: number) => <span> {price.toPrecision(4)}</span>,
+      sorter: true
     },
     {
       title: 'Discount',
       key: 'discount',
       dataIndex: 'discount',
-      render: (discount: number) => <span> {discount.toPrecision(4)}</span>
+      render: (discount: number) => <span> {discount.toPrecision(4)}</span>,
+      sorter: true
     },
     {
       title: 'Actions',
@@ -85,12 +102,29 @@ const ProductTable: React.FC = () => {
     },
   ];
 
+
+
   useEffect(() => {
-    (async () => { await getData() })()
+    (async () => {
+      const result = await categoryService.get(1, 0)
+      if (result.status == 200) {
+        const flt = result.data.itemsList.map(x => ({ value: x.name.toLocaleLowerCase(), text: x.name }))
+        setFilters(flt);
+        setSearch({ ...search, categories: flt.map(x => x.value) })
+      }
+    })()
+  }, [])
+
+
+  useEffect(() => {
+    if (search.categories) {
+      (async () => {
+        await getData()
+      })()
+    }
   }, [search]);
 
   const getData = async () => {
-    console.log(search)
     const result = await productService.search(search)
     if (result.status == 200) {
       setData(result.data.itemsList)
@@ -113,6 +147,29 @@ const ProductTable: React.FC = () => {
     }
   }
 
+  const onChange: TableProps<IProduct>['onChange'] = (_pagination, filters, sorter, extra) => {
+    if (extra.action === "sort") {
+      let sortDir;
+      let sortField;
+
+      if (Array.isArray(sorter)) {
+        sortDir = sorter[0].order;
+        sortField =sorter[0].order? sorter[0].columnKey : defaultSortTable;
+      } else {
+        sortDir = sorter.order;
+        sortField = sorter.order? sorter.columnKey : defaultSortTable;
+      }
+      
+      setSearch({ ...search, sort: sortField, sortDir: sortDir })
+    }
+    else {
+      setSearch({ ...search, categories: filters.category ? filters.category as string[] : [] })
+    }
+
+  };
+
+
+
   const onPaginationChange = (currentPage: number, pageSize: number) => {
     setSearch({ ...search, page: currentPage, size: pageSize })
     window.scrollTo(0, 0)
@@ -124,6 +181,8 @@ const ProductTable: React.FC = () => {
         dataSource={data}
         rowKey="id"
         pagination={false}
+        onChange={onChange}
+        showSorterTooltip={{ target: 'sorter-icon' }}
       />
       {total > 0 &&
         <Pagination
