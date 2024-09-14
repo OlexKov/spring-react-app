@@ -1,5 +1,5 @@
-import { Button, Image, message, Pagination, Space, Table, TableColumnsType, TableProps } from 'antd';
-import React, { useEffect, useState } from 'react'
+import { Button, Image, Input, InputRef, message, Pagination, Space, Table, TableColumnsType, TableColumnType, TableProps } from 'antd';
+import React, { useEffect, useRef, useState } from 'react'
 import { ICategory } from '../../../models/Category';
 import { useNavigate } from 'react-router-dom';
 import { paginatorConfig } from '../../../helpers/constants';
@@ -9,8 +9,7 @@ import { productService } from '../../../services/productService';
 import { IProductImage } from '../../../models/ProductImage';
 import { SearchData } from '../../../models/SearchData';
 import { categoryService } from '../../../services/categoryService';
-
-
+import { SearchOutlined } from '@ant-design/icons';
 
 interface filterData {
   text: string,
@@ -23,6 +22,10 @@ const ProductTable: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<IProduct[]>()
   const [filters, setFilters] = useState<filterData[]>([])
+  const [searchText, setSearchText] = useState('');
+
+
+  const [total, setTotal] = useState<number>(0)
   const [search, setSearch] = useState<SearchData>({
     page: paginatorConfig.pagination.defaultCurrent,
     size: paginatorConfig.pagination.defaultPageSize,
@@ -32,7 +35,58 @@ const ProductTable: React.FC = () => {
     categories: undefined,
     sortDir: ''
   })
-  const [total, setTotal] = useState<number>(0)
+
+
+  const getColumnSearchProps = (dataIndex: string): TableColumnType<IProduct> => ({
+    filterDropdown: ({ close }) => (
+      <div style={{ padding: 8 }} >
+        <Input
+          value={searchText}
+          placeholder={`Search ${dataIndex}`}
+          onPressEnter={() => handleSearch(dataIndex)}
+          onChange={(e) => { setSearchText(e.target.value) }}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(dataIndex)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+    ),
+    onFilterDropdownOpenChange: (open: boolean) => {
+      if (open) {
+        dataIndex === "name" ? setSearchText(search.name) : setSearchText(search.description);
+      }
+    }
+
+  });
+
 
   const columns: TableColumnsType<IProduct> = [
     {
@@ -46,7 +100,6 @@ const ProductTable: React.FC = () => {
       key: 'images',
       render: (element: IProductImage[]) => <Image alt={`Image`} width={100} src={`${imageFolder}/150_${element.find(x => x.priority === 0)?.name}`} />
     },
-
     {
       title: 'Category',
       key: 'category',
@@ -54,26 +107,32 @@ const ProductTable: React.FC = () => {
       showSorterTooltip: { target: 'full-header' },
       filterSearch: true,
       filters: filters,
-      filteredValue: search.categories?.length !== 0 ? search.categories : filters.map(x => x.value),
+      filteredValue: search.categories ? search.categories : filters.map(x => x.value),
       sorter: true
     },
     {
       title: 'Name',
       key: 'name',
       dataIndex: 'name',
-      sorter: true
+      sorter: true,
+      ...getColumnSearchProps('name')
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      ...getColumnSearchProps('description')
     },
 
     {
       title: 'Date',
-      key: 'date',
+      key: 'creationTime',
       dataIndex: 'creationTime',
-      render: (date: string) => <span> {date.slice(0, 10)}</span>,
+      render: (date: string) =>
+        <div className='text-center d-flex flex-column gap-1'>
+          <span>{date.slice(0, 10)}</span>
+          <span>{date.slice(11, 19)}</span>
+        </div>,
       width: 110,
       sorter: true
     },
@@ -125,6 +184,7 @@ const ProductTable: React.FC = () => {
   }, [search]);
 
   const getData = async () => {
+    console.log(search)
     const result = await productService.search(search)
     if (result.status == 200) {
       setData(result.data.itemsList)
@@ -151,15 +211,13 @@ const ProductTable: React.FC = () => {
     if (extra.action === "sort") {
       let sortDir;
       let sortField;
-
       if (Array.isArray(sorter)) {
         sortDir = sorter[0].order;
-        sortField =sorter[0].order? sorter[0].columnKey : defaultSortTable;
+        sortField = sorter[0].order ? sorter[0].columnKey : defaultSortTable;
       } else {
         sortDir = sorter.order;
-        sortField = sorter.order? sorter.columnKey : defaultSortTable;
+        sortField = sorter.order ? sorter.columnKey : defaultSortTable;
       }
-      
       setSearch({ ...search, sort: sortField, sortDir: sortDir })
     }
     else {
@@ -168,12 +226,20 @@ const ProductTable: React.FC = () => {
 
   };
 
+  const handleReset = (dataIndex: string) => {
+    dataIndex === "name" ? setSearch({ ...search, name: '' }) : setSearch({ ...search, description: '' })
+    setSearchText('');
+  };
 
+  const handleSearch = async (dataIndex: string) => {
+    dataIndex === "name" ? setSearch({ ...search, name: searchText }) : setSearch({ ...search, description: searchText })
+  };
 
   const onPaginationChange = (currentPage: number, pageSize: number) => {
     setSearch({ ...search, page: currentPage, size: pageSize })
     window.scrollTo(0, 0)
   }
+
   return (
     <div className=' mx-auto'  >
       <Table
