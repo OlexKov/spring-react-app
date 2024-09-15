@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import logo from '../../../../logo.png';
-import { Menu } from "../../menu/menu";
+import { Menu } from "../../menu";
 
 
 const Header: React.FC =() => {
