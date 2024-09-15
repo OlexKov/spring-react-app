@@ -3,7 +3,6 @@ import Error from './components/error'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SetupInterceptors } from './interceptor/interceptor';
 import { Route, Routes } from 'react-router-dom';
-import CategoryTable from './components/category/category-table';
 import CategoryCreation from './components/category/category-create';
 import Layout from './components/layout';
 import ProductPage from './components/product';
