@@ -20,8 +20,6 @@ const items :ItemType<MenuItemType>[]= [
         label:<Link  className='link' to="/products"><span>Product table</span></Link>,
       
     }
-    
-
 ]
 
 export const Menu :React.FC = () => {
