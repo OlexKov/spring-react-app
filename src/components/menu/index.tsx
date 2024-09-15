@@ -11,13 +11,19 @@ const items :ItemType<MenuItemType>[]= [
     {
         key: "/",
         icon:<HomeOutlined className='fs-6' />,
-        label:<Link className='link' to="/">Домашня сторінка</Link>,
+        label:<Link className='link' to="/">Номе</Link>,
        
     },
     {
         key: "/products",
         icon:<TableOutlined className='fs-6'/>,
         label:<Link  className='link' to="/products"><span>Product table</span></Link>,
+      
+    },
+    {
+        key: "/categories",
+        icon:<TableOutlined className='fs-6'/>,
+        label:<Link  className='link' to="/categories"><span>Category table</span></Link>,
       
     }
 ]

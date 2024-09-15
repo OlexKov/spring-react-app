@@ -8,6 +8,7 @@ import CategoryCreation from './components/category/category-create';
 import Layout from './components/layout';
 import ProductPage from './components/product';
 import ProductCreate from './components/product/product-create';
+import HomePage from './components/home';
 
 
 
@@ -18,8 +19,9 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<CategoryTable />} />
+          <Route index element={<HomePage />} />
           <Route path="/create" element={<CategoryCreation />} />
+          <Route path="/categories" element={<ProductPage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/create-product" element={<ProductCreate />} />
           <Route path="*" element={
