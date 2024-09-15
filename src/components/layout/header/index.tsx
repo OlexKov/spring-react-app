@@ -9,9 +9,9 @@ const Header: React.FC =() => {
 
     return (
         <header>
-           <div className='w-70 h-100 mx-auto d-flex  justify-content-between align-items-center'>
-            <div className="d-flex gap-4">
-                <img onClick={()=>navigate('/')} style={{ marginLeft:30, height: 45, width: 45, cursor:'pointer' }} src={logo} alt='logo' />
+           <div className=' h-100 mx-auto d-flex  justify-content-between align-items-center'>
+            <div className="d-flex gap-4 w-100">
+                <img onClick={()=>navigate('/')} style={{ marginLeft:30,marginRight:'5%', height: 45, width: 45, cursor:'pointer' }} src={logo} alt='logo' />
                 <Menu/>
             </div>
                
