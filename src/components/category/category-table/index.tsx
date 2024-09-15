@@ -17,6 +17,7 @@ const CategoryTable: React.FC = () => {
   const [data, setData] = useState<ICategory[]>()
   const [pagination, setPagination] = useState<PagintionData>({ page: 1, pageSize: paginatorConfig.pagination.defaultPageSize })
   const [total, setTotal] = useState<number>(0)
+  const mainElement = document.querySelector('main') as HTMLElement;
 
   const columns: TableProps<ICategory>['columns'] = [
     {
@@ -60,6 +61,10 @@ const CategoryTable: React.FC = () => {
   ];
 
   useEffect(() => {
+    mainElement.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [data])
+
+  useEffect(() => {
     (async () => { await getData() })()
   }, [pagination]);
 
@@ -80,7 +85,7 @@ const CategoryTable: React.FC = () => {
         const newPage = pagination.page - 1;
         setPagination({ ...pagination, page: newPage })
       }
-      else{
+      else {
         await getData();
       }
     }
@@ -88,7 +93,6 @@ const CategoryTable: React.FC = () => {
 
   const onPaginationChange = (currentPage: number, pageSize: number) => {
     setPagination({ ...pagination, page: currentPage, pageSize: pageSize })
-    window.scrollTo(0, 0)
   }
   return (
     <div className=' mx-auto w-75 '  >
@@ -105,7 +109,7 @@ const CategoryTable: React.FC = () => {
         dataSource={data}
         rowKey="id"
         pagination={false}
-         />
+      />
       {total > 0 &&
         <Pagination
           align="center"

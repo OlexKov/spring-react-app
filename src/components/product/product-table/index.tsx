@@ -23,6 +23,7 @@ const ProductTable: React.FC = () => {
   const [data, setData] = useState<IProduct[]>()
   const [filters, setFilters] = useState<filterData[]>([])
   const [searchText, setSearchText] = useState('');
+  const mainElement = document.querySelector('main') as HTMLElement;
 
 
   const [total, setTotal] = useState<number>(0)
@@ -168,7 +169,9 @@ const ProductTable: React.FC = () => {
     },
   ];
 
-
+  useEffect(()=>{
+    mainElement.scrollTo({ top: 0, behavior: 'smooth' });
+},[data])
 
   useEffect(() => {
     (async () => {
@@ -204,8 +207,7 @@ const ProductTable: React.FC = () => {
       const product = data?.find(x => x.id === id);
       message.success(`Product "${product?.name}" successfully deleted`)
       if (data?.length === 1 && search.page > 1) {
-        const newPage = search.page;
-        setSearch({ ...search, page: newPage })
+        setSearch({ ...search, page: search.page - 1 })
       }
       else {
         await getData();
@@ -243,7 +245,7 @@ const ProductTable: React.FC = () => {
 
   const onPaginationChange = (currentPage: number, pageSize: number) => {
     setSearch({ ...search, page: currentPage, size: pageSize })
-    window.scrollTo(0, 0)
+   // window.scrollTo({top: 0})
   }
 
   return (
@@ -254,7 +256,6 @@ const ProductTable: React.FC = () => {
         rowKey="id"
         pagination={false}
         onChange={onChange}
-        showSorterTooltip={{ target: 'sorter-icon' }}
       />
       {total > 0 &&
         <Pagination
