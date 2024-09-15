@@ -16,6 +16,8 @@ interface filterData {
   value: string
 }
 
+
+
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
 const ProductTable: React.FC = () => {
   const defaultSortTable = "id"
@@ -194,6 +196,7 @@ const ProductTable: React.FC = () => {
   }, [search]);
 
   const getData = async () => {
+    console.log(search)
     const result = await productService.search(search)
     if (result.status == 200) {
       setData(result.data.itemsList)
@@ -229,7 +232,7 @@ const ProductTable: React.FC = () => {
       setSearch({ ...search, sort: sortField, sortDir: sortDir })
     }
     else {
-      setSearch({ ...search, categories: filters["category.name"] ? filters["category.name"] as string[] : [] })
+      setSearch({ ...search, page:1, categories: filters["category.name"] ? filters["category.name"] as string[] : [] })
     }
 
   };
@@ -240,12 +243,11 @@ const ProductTable: React.FC = () => {
   };
 
   const handleSearch = async (dataIndex: string) => {
-    dataIndex === "name" ? setSearch({ ...search, name: searchText }) : setSearch({ ...search, description: searchText })
+    dataIndex === "name" ? setSearch({ ...search, page:1, name: searchText }) : setSearch({ ...search, description: searchText })
   };
 
   const onPaginationChange = (currentPage: number, pageSize: number) => {
     setSearch({ ...search, page: currentPage, size: pageSize })
-   // window.scrollTo({top: 0})
   }
 
   return (
