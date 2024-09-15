@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {  HomeOutlined,   TableOutlined} from '@ant-design/icons';
 import { Menu as AntMenu,} from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import '../menu/Menu.css'
+import './Menu.css'
 import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 
 
