@@ -243,7 +243,7 @@ const ProductTable: React.FC = () => {
   };
 
   const handleSearch = async (dataIndex: string) => {
-    dataIndex === "name" ? setSearch({ ...search, page:1, name: searchText }) : setSearch({ ...search, description: searchText })
+    dataIndex === "name" ? setSearch({ ...search, page:1, name: searchText }) : setSearch({ ...search,page:1, description: searchText })
   };
 
   const onPaginationChange = (currentPage: number, pageSize: number) => {
