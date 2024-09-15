@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Form, Input, InputNumber, message, Select, Space, Spin, Switch, TreeSelectProps, type UploadFile } from 'antd';
+import { Button, Divider, Form, Input, InputNumber, message, Select,  Spin,  type UploadFile } from 'antd';
 import ImageUpload from '../../common-components/ImageUpload';
 import TextArea from 'antd/es/input/TextArea';
 import { useNavigate, useSearchParams } from 'react-router-dom';
