@@ -170,7 +170,7 @@ const ProductTable: React.FC = () => {
   ];
 
   useEffect(()=>{
-    mainElement.scrollTo({ top: 0, behavior: 'smooth' });
+    if(mainElement !== null){ mainElement.scrollTo({ top: 0, behavior: 'smooth' });}
 },[data])
 
   useEffect(() => {
