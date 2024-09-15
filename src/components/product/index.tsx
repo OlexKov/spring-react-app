@@ -5,8 +5,8 @@ import ProductTable from './product-table';
 
 const ProductPage: React.FC = () => {
 
-    return (
-        <div className=' mx-auto w-75 '  >
+  return (
+    <div className=' mx-auto w-75 '  >
       <div className='d-flex justify-content-between'>
         <h4 className='text-muted'>Product table</h4>
         <Link to={'/create-product'}>
@@ -14,10 +14,10 @@ const ProductPage: React.FC = () => {
         </Link>
       </div>
       <Divider />
-      <ProductTable/>
-      
+      <ProductTable />
+
     </div>
-    );
+  );
 
 }
 

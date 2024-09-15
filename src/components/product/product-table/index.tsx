@@ -1,5 +1,5 @@
-import { Button, Image, Input, InputRef, message, Pagination, Space, Table, TableColumnsType, TableColumnType, TableProps } from 'antd';
-import React, { useEffect, useRef, useState } from 'react'
+import { Button, Image, Input, message, Pagination, Space, Table, TableColumnsType, TableColumnType, TableProps } from 'antd';
+import React, { useEffect, useState } from 'react'
 import { ICategory } from '../../../models/Category';
 import { useNavigate } from 'react-router-dom';
 import { paginatorConfig } from '../../../helpers/constants';
@@ -93,16 +93,18 @@ const ProductTable: React.FC = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
+      filteredValue: null
     },
     {
       title: 'Image',
       dataIndex: 'images',
       key: 'images',
-      render: (element: IProductImage[]) => <Image alt={`Image`} width={100} src={`${imageFolder}/150_${element.find(x => x.priority === 0)?.name}`} />
+      render: (element: IProductImage[]) => <Image alt={`Image`} width={100} src={`${imageFolder}/150_${element.find(x => x.priority === 0)?.name}`} />,
+      filteredValue: null
     },
     {
       title: 'Category',
-      key: 'category',
+      key: 'category.name',
       dataIndex: 'categoryName',
       showSorterTooltip: { target: 'full-header' },
       filterSearch: true,
@@ -115,13 +117,15 @@ const ProductTable: React.FC = () => {
       key: 'name',
       dataIndex: 'name',
       sorter: true,
-      ...getColumnSearchProps('name')
+      ...getColumnSearchProps('name'),
+      filteredValue: null
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      ...getColumnSearchProps('description')
+      ...getColumnSearchProps('description'),
+      filteredValue: null
     },
 
     {
@@ -134,21 +138,24 @@ const ProductTable: React.FC = () => {
           <span>{date.slice(11, 19)}</span>
         </div>,
       width: 110,
-      sorter: true
+      sorter: true,
+      filteredValue: null
     },
     {
       title: 'Price',
       key: 'price',
       dataIndex: 'price',
       render: (price: number) => <span> {price.toPrecision(4)}</span>,
-      sorter: true
+      sorter: true,
+      filteredValue: null
     },
     {
       title: 'Discount',
       key: 'discount',
       dataIndex: 'discount',
       render: (discount: number) => <span> {discount.toPrecision(4)}</span>,
-      sorter: true
+      sorter: true,
+      filteredValue: null
     },
     {
       title: 'Actions',
@@ -184,7 +191,6 @@ const ProductTable: React.FC = () => {
   }, [search]);
 
   const getData = async () => {
-    console.log(search)
     const result = await productService.search(search)
     if (result.status == 200) {
       setData(result.data.itemsList)
@@ -221,7 +227,7 @@ const ProductTable: React.FC = () => {
       setSearch({ ...search, sort: sortField, sortDir: sortDir })
     }
     else {
-      setSearch({ ...search, categories: filters.category ? filters.category as string[] : [] })
+      setSearch({ ...search, categories: filters["category.name"] ? filters["category.name"] as string[] : [] })
     }
 
   };
