@@ -1,7 +1,7 @@
 import { Button, Image, Input, message, Pagination, Space, Table, TableColumnsType, TableColumnType, TableProps } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { ICategory } from '../../../models/Category';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { paginatorConfig } from '../../../helpers/constants';
 import { APP_ENV } from '../../../env';
 import { IProduct } from '../../../models/Product';
@@ -10,6 +10,7 @@ import { IProductImage } from '../../../models/ProductImage';
 import { SearchData } from '../../../models/SearchData';
 import { categoryService } from '../../../services/categoryService';
 import { SearchOutlined } from '@ant-design/icons';
+import { getQueryString } from '../../../helpers/common-methods';
 
 interface filterData {
   text: string,
@@ -25,18 +26,19 @@ const ProductTable: React.FC = () => {
   const [data, setData] = useState<IProduct[]>()
   const [filters, setFilters] = useState<filterData[]>([])
   const [searchText, setSearchText] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams('');
   const mainElement = document.querySelector('main') as HTMLElement;
 
 
   const [total, setTotal] = useState<number>(0)
   const [search, setSearch] = useState<SearchData>({
-    page: paginatorConfig.pagination.defaultCurrent,
-    size: paginatorConfig.pagination.defaultPageSize,
-    name: '',
-    description: '',
-    sort: defaultSortTable,
-    categories: undefined,
-    sortDir: ''
+    page: Number(searchParams.get("page")) || paginatorConfig.pagination.defaultCurrent,
+    size: Number(searchParams.get("size")) || paginatorConfig.pagination.defaultPageSize,
+    name: searchParams.get("name") || '',
+    description: searchParams.get("description") || '',
+    sort: searchParams.get("sort") || defaultSortTable,
+    categories: searchParams.get("categories") ? (JSON.parse(searchParams.get("categories") || "") as string[]) :  undefined,
+    sortDir: searchParams.get("sortDir") || ''
   })
 
 
@@ -181,7 +183,9 @@ const ProductTable: React.FC = () => {
       if (result.status == 200) {
         const flt = result.data.itemsList.map(x => ({ value: x.name.toLocaleLowerCase(), text: x.name }))
         setFilters(flt);
-        setSearch({ ...search, categories: flt.map(x => x.value) })
+       if(!search.categories){
+         setSearch({ ...search, categories: flt.map(x => x.value) })
+       }  
       }
     })()
   }, [])
@@ -190,13 +194,13 @@ const ProductTable: React.FC = () => {
   useEffect(() => {
     if (search.categories) {
       (async () => {
+        setSearchParams(getQueryString(search))
         await getData()
       })()
     }
   }, [search]);
 
   const getData = async () => {
-    console.log(search)
     const result = await productService.search(search)
     if (result.status == 200) {
       setData(result.data.itemsList)

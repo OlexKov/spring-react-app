@@ -229,21 +229,6 @@ const ProductCreate: React.FC = () => {
                 <ImageUpload files={files} onChange={setFiles} />
               </Form.Item>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div className='d-flex justify-content-end'>
               <Button loading={publishing} size='large' htmlType="submit">
                 Save

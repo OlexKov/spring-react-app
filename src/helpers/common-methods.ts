@@ -23,4 +23,21 @@ export const getBase64 = (file: FileType): Promise<string> =>
     return result;
   };
 
+  export const getQueryString = (filter: any): string => {
+    var result = '';
+    Object.keys(filter).forEach((key) => {
+      if (filter[key] !== undefined
+        && filter[key] !== null
+        && filter[key] !== ''
+        && filter[key]?.length !== 0) {
+        var value = typeof (filter[key]) === "object"
+          ? JSON.stringify(filter[key])
+          : filter[key];
+        var symbol = result === '' ? '?' : '&'
+        result += `${symbol + key}=${value}`
+      }
+    });
+    return result;
+  } 
+
   export type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];

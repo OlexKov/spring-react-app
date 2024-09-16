@@ -1,10 +1,11 @@
 import { Button, Divider, Image, message, Pagination, Space, Table, TableProps } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { ICategory } from '../../../models/Category';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams} from 'react-router-dom';
 import { paginatorConfig } from '../../../helpers/constants';
 import { categoryService } from '../../../services/categoryService';
 import { APP_ENV } from '../../../env';
+import { getQueryString } from '../../../helpers/common-methods';
 
 
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
@@ -15,7 +16,11 @@ interface PagintionData {
 const CategoryTable: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<ICategory[]>()
-  const [pagination, setPagination] = useState<PagintionData>({ page: 1, pageSize: paginatorConfig.pagination.defaultPageSize })
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const [pagination, setPagination] = useState<PagintionData>({ 
+    page: Number(searchParams.get("page")) || paginatorConfig.pagination.defaultCurrent,
+    pageSize: Number(searchParams.get("pageSize")) || paginatorConfig.pagination.defaultPageSize,
+   })
   const [total, setTotal] = useState<number>(0)
   const mainElement = document.querySelector('main') as HTMLElement;
 
@@ -65,7 +70,10 @@ const CategoryTable: React.FC = () => {
   }, [data])
 
   useEffect(() => {
-    (async () => { await getData() })()
+    (async () => {
+      setSearchParams(getQueryString(pagination))
+       await getData()
+       })()
   }, [pagination]);
 
   const getData = async () => {
