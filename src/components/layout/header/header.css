@@ -1,0 +1,16 @@
+.user-profile-button,
+.favourite-button {
+  font-size: 24px;
+  color: white;
+}
+
+.user-profile-button span {
+  font-size: 17px;
+}
+
+
+.user-profile-button:hover,
+.favourite-button:hover {
+  color: gray;
+  cursor: pointer;
+}

@@ -1,13 +1,15 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { message } from 'antd'
 import { APP_ENV } from '../env';
+import { storageService } from '../services/storageService';
+import user from '../store/userStore'
 
 
 axios.defaults.baseURL = APP_ENV.SERVER_HOST
 export const SetupInterceptors = () => {
     axios.interceptors.request.use(
         async (config: InternalAxiosRequestConfig) => {
-             //config.headers['Authorization'] = `Bearer ghjkfghjfgjfgjhfg`;
+             config.headers['Authorization'] = `Bearer ${storageService.getAccessToken()}`;
             return config
           },
         async (error) => {
@@ -20,8 +22,10 @@ export const SetupInterceptors = () => {
     async (error:AxiosError) => {
       const status = error.response?.status || 500;
       switch (status){
-        
+         
         case 401: 
+        if(!user.isAuthorized)
+           window.location.replace("/login")
         break;
        
 

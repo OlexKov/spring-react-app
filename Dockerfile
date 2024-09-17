@@ -18,8 +18,6 @@ RUN npm run build
 
 # Виберіть образ для продакшн
 FROM nginx:alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Скопіюйте побудовані файли в каталог для сервера
 COPY --from=build /app/dist /usr/share/nginx/html
 

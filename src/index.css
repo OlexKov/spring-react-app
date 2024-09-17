@@ -41,5 +41,15 @@ footer {
   text-align: center;
 }
 
+.buttons-block{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:15px;
+}
+.buttons-block button{
+  width: 150px;
+}
+
 
 
