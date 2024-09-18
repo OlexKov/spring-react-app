@@ -6,7 +6,7 @@ import Footer from './footer';
 
 const Layout: React.FC = () => {
     return (
-        <div className='bg-main'>
+        <div className='bg-main d-flex flex-column justify-content-between h-100'>
             <Header />
                 <MainContent />
             <Footer />
