@@ -69,7 +69,7 @@ const Header: React.FC = observer(() => {
                 </div>
 
                 <div className=' d-flex gap-5 mx-4 '>
-                    <HeartOutlined className='favourite-button' onClick={() => navigate('/favorites')} />
+                   {!user.isAdmin &&  <HeartOutlined className='favourite-button' onClick={() => navigate('/favorites')} />}
                     {(user.isAuthorized &&
                         <Dropdown
                             menu={{ items: userMenuItems }}

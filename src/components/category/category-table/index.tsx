@@ -60,7 +60,7 @@ const CategoryTable: React.FC = () => {
       render: (element: ICategory) =>
         <Space>
           <Button onClick={() => deleteCategory(element.id)} danger type="primary">Delete</Button>
-          <Button onClick={() => navigate(`/create?id=${element.id}`)} type='primary'>Edit</Button>
+          <Button onClick={() => navigate(`create?id=${element.id}`)} type='primary'>Edit</Button>
         </Space>
     },
   ];
@@ -106,7 +106,7 @@ const CategoryTable: React.FC = () => {
     <div className=' mx-auto w-75 '  >
       <div className='d-flex justify-content-between'>
         <h4 className='text-muted'>Category table</h4>
-        <Link to={'/create'}>
+        <Link to={'create'}>
           <Button type="primary">Create new category</Button>
         </Link>
       </div>

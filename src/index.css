@@ -32,9 +32,11 @@ header {
 }
 
 main {
+  background-color: rgb(248, 248, 248);
   padding: 20px 0 20px 0;
   overflow-y: auto;
   overflow-x: hidden;
+  flex-grow: 1;
 }
 
 footer {
@@ -52,6 +54,17 @@ footer {
 }
 .buttons-block button{
   width: 150px;
+}
+
+.product-view {
+  width: 100%;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.product-view:hover {
+  transform: scale(1.005);
+  box-shadow: 0px 0px 6px 3px rgba(0, 0, 0, 0.1);
 }
 
 

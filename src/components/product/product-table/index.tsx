@@ -1,7 +1,7 @@
-import { Button, Image, Input, message, Pagination, Space, Table, TableColumnsType, TableColumnType, TableProps } from 'antd';
+import { Button, Divider, Image, Input, message, Pagination, Space, Table, TableColumnsType, TableColumnType, TableProps } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { ICategory } from '../../../models/Category';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { paginatorConfig } from '../../../helpers/constants';
 import { APP_ENV } from '../../../env';
 import { IProduct } from '../../../models/Product';
@@ -35,7 +35,7 @@ const ProductTable: React.FC = () => {
     name: searchParams.get("name") || '',
     description: searchParams.get("description") || '',
     sort: searchParams.get("sort") || defaultSortTable,
-    categories: searchParams.get("categories") ? (JSON.parse(searchParams.get("categories") || "") as string[]) :  undefined,
+    categories: searchParams.get("categories") ? (JSON.parse(searchParams.get("categories") || "") as string[]) : undefined,
     sortDir: searchParams.get("sortDir") || ''
   })
 
@@ -166,14 +166,14 @@ const ProductTable: React.FC = () => {
       render: (element: ICategory) =>
         <Space>
           <Button onClick={() => deleteCategory(element.id)} danger type="primary">Delete</Button>
-          <Button onClick={() => navigate(`/create-product?id=${element.id}`)} type='primary'>Edit</Button>
+          <Button onClick={() => navigate(`create?id=${element.id}`)} type='primary'>Edit</Button>
         </Space>
     },
   ];
 
-  useEffect(()=>{
-    if(mainElement !== null){ mainElement.scrollTo({ top: 0, behavior: 'smooth' });}
-},[data])
+  useEffect(() => {
+    if (mainElement !== null) { mainElement.scrollTo({ top: 0, behavior: 'smooth' }); }
+  }, [data])
 
   useEffect(() => {
     (async () => {
@@ -181,9 +181,9 @@ const ProductTable: React.FC = () => {
       if (result.status == 200) {
         const flt = result.data.itemsList.map(x => ({ value: x.name.toLocaleLowerCase(), text: x.name }))
         setFilters(flt);
-       if(!search.categories){
-         setSearch({ ...search, categories: flt.map(x => x.value) })
-       }  
+        if (!search.categories) {
+          setSearch({ ...search, categories: flt.map(x => x.value) })
+        }
       }
     })()
   }, [])
@@ -234,7 +234,7 @@ const ProductTable: React.FC = () => {
       setSearch({ ...search, sort: sortField, sortDir: sortDir })
     }
     else {
-      setSearch({ ...search, page:1, categories: filters["category.name"] ? filters["category.name"] as string[] : [] })
+      setSearch({ ...search, page: 1, categories: filters["category.name"] ? filters["category.name"] as string[] : [] })
     }
 
   };
@@ -245,7 +245,7 @@ const ProductTable: React.FC = () => {
   };
 
   const handleSearch = async (dataIndex: string) => {
-    dataIndex === "name" ? setSearch({ ...search, page:1, name: searchText }) : setSearch({ ...search,page:1, description: searchText })
+    dataIndex === "name" ? setSearch({ ...search, page: 1, name: searchText }) : setSearch({ ...search, page: 1, description: searchText })
   };
 
   const onPaginationChange = (currentPage: number, pageSize: number) => {
@@ -253,28 +253,40 @@ const ProductTable: React.FC = () => {
   }
 
   return (
-    <div className=' mx-auto'  >
-      <Table
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        pagination={false}
-        onChange={onChange}
-      />
-      {total > 0 &&
-        <Pagination
-          align="center"
-          showSizeChanger
-          showQuickJumper
-          pageSizeOptions={paginatorConfig.pagination.pageSizeOptions}
-          locale={paginatorConfig.pagination.locale}
-          showTotal={paginatorConfig.pagination.showTotal}
-          current={search.page}
-          total={total}
-          pageSize={search.size}
-          onChange={onPaginationChange}
-          className='mt-4' />
-      }
+
+    <div className=' mx-auto w-75 '  >
+      <div className='d-flex justify-content-between'>
+        <h4 className='text-muted'>Product table</h4>
+        <Link to={'create'}>
+          <Button type="primary">Create new product</Button>
+        </Link>
+      </div>
+      <Divider />
+      <div className=' mx-auto'  >
+        <div className=' mx-auto'  >
+          <Table
+            columns={columns}
+            dataSource={data}
+            rowKey="id"
+            pagination={false}
+            onChange={onChange}
+          />
+          {total > 0 &&
+            <Pagination
+              align="center"
+              showSizeChanger
+              showQuickJumper
+              pageSizeOptions={paginatorConfig.pagination.pageSizeOptions}
+              locale={paginatorConfig.pagination.locale}
+              showTotal={paginatorConfig.pagination.showTotal}
+              current={search.page}
+              total={total}
+              pageSize={search.size}
+              onChange={onPaginationChange}
+              className='mt-4' />
+          }
+        </div>
+      </div>
     </div>
   )
 }

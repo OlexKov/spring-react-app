@@ -19,7 +19,7 @@ const items :MenuItemType[]= [
         key: "/products",
         icon:<TableOutlined className='fs-6'/>,
         label:<Link  className='link' to="/products"><span>Product table</span></Link>,
-        users: ['User']
+        users: ['Admin']
     },
     {
         key: "/categories",

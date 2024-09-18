@@ -5,14 +5,13 @@ import { SetupInterceptors } from './interceptor/interceptor';
 import { Route, Routes } from 'react-router-dom';
 import CategoryCreation from './components/category/category-create';
 import Layout from './components/layout';
-import ProductPage from './components/product';
 import ProductCreate from './components/product/product-create';
 import HomePage from './components/home';
 import CategoryTable from './components/category/category-table';
 import { Login } from './components/user/login';
 import { Registration } from './components/user/registration';
-
-
+import ProductTable from './components/product/product-table';
+import AdminProtectedRoute from './components/protected-routes/AdminProtectedRoute';
 
 function App() {
   SetupInterceptors();
@@ -22,12 +21,16 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="/create" element={<CategoryCreation />} />
+          <Route path="/categories/create" element={
+            <AdminProtectedRoute children={<CategoryCreation />}/>}/>
+          <Route path="/categories" element={
+            <AdminProtectedRoute children={<CategoryTable />}/>}/>
+          <Route path="/products" element={
+            <AdminProtectedRoute children={ <ProductTable />}/>}/>
+          <Route path="/products/create" element={
+            <AdminProtectedRoute children={ <ProductCreate />}/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
-          <Route path="/categories" element={<CategoryTable />} />
-          <Route path="/products" element={<ProductPage />} />
-          <Route path="/create-product" element={<ProductCreate />} />
           <Route path="*" element={
             <Error
               status="404"
