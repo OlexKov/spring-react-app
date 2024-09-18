@@ -17,8 +17,6 @@ interface filterData {
   value: string
 }
 
-
-
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
 const ProductTable: React.FC = () => {
   const defaultSortTable = "id"

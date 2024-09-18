@@ -8,7 +8,7 @@ import { LoginModel } from '../../../models/LoginModel';
 import { storageService } from '../../../services/storageService';
 import { observer } from 'mobx-react';
 
-export const Login: React.FC = observer(() => {
+export const Login: React.FC = () => {
     const [remember, setRemember] = useState<boolean>(false);
     const navigate = useNavigate()
 
@@ -89,4 +89,4 @@ export const Login: React.FC = observer(() => {
 
         </>
     )
-})
+}
