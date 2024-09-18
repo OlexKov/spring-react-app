@@ -21,6 +21,8 @@ FROM nginx:alpine
 # Скопіюйте побудовані файли в каталог для сервера
 COPY --from=build /app/dist /usr/share/nginx/html
 
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
 # Відкрийте порт для сервера
 EXPOSE 80
 
