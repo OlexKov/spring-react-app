@@ -24,16 +24,16 @@ export const getBase64 = (file: FileType): Promise<string> =>
   };
 
   export const getQueryString = (filter: any): string => {
-    var result = '';
+    let result = '';
     Object.keys(filter).forEach((key) => {
       if (filter[key] !== undefined
         && filter[key] !== null
         && filter[key] !== ''
         && filter[key]?.length !== 0) {
-        var value = typeof (filter[key]) === "object"
+        const value = typeof (filter[key]) === "object"
           ? JSON.stringify(filter[key])
           : filter[key];
-        var symbol = result === '' ? '?' : '&'
+        const symbol = result === '' ? '?' : '&'
         result += `${symbol + key}=${value}`
       }
     });
