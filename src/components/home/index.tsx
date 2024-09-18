@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
   }
   return (
   <>
-  <h1>Welcome to home page !!!</h1>
+  <h1>Welcome to home page !!! {total}</h1>
   <div className='mx-auto d-flex flex-column gap-4 w-75'>
    {
        data?.map(x=><Product product={x}/>)

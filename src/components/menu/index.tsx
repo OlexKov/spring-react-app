@@ -3,7 +3,6 @@ import {  HomeOutlined,   TableOutlined} from '@ant-design/icons';
 import { Menu as AntMenu,} from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import './menu.css'
-import { MenuItemType } from 'antd/es/menu/interface';
 import user from '../../store/userStore'
 import { MenuItem } from '../../models/MenuItem';
 

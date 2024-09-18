@@ -6,7 +6,6 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import user from '../../../store/userStore'
 import { LoginModel } from '../../../models/LoginModel';
 import { storageService } from '../../../services/storageService';
-import { observer } from 'mobx-react';
 
 export const Login: React.FC = () => {
     const [remember, setRemember] = useState<boolean>(false);
