@@ -5,9 +5,10 @@ import { Link, useLocation } from 'react-router-dom';
 import './menu.css'
 import { MenuItemType } from 'antd/es/menu/interface';
 import user from '../../store/userStore'
+import { MenuItem } from '../../models/MenuItem';
 
 
-const items :MenuItemType[]= [
+const items :MenuItem[]= [
     {
         key: "/",
         icon:<HomeOutlined className='fs-6' />,
@@ -34,7 +35,7 @@ const items :MenuItemType[]= [
 export const Menu :React.FC = () => {
     const location = useLocation();
     const [current, setCurrent] = useState(location.pathname);
-    const [menuItems,setMenuItems] = useState<MenuItemType[]>(items.filter(x=> x?.users?.includes('Guest')))
+    const [menuItems,setMenuItems] = useState<MenuItem[]>(items.filter(x=> x?.users?.includes('Guest')))
     useEffect(() => {
         if (location) {
             if( current !== location.pathname ) {
@@ -45,7 +46,7 @@ export const Menu :React.FC = () => {
 
     
     useEffect(()=>{
-        let itemArray:MenuItemType[] = []; 
+        let itemArray:MenuItem[] = []; 
         if(!user.isAuthorized)
            itemArray = items.filter(x=> x?.users?.includes('Guest'));
         else if(user.isAdmin)
