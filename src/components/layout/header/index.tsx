@@ -75,7 +75,7 @@ const Header: React.FC = observer(() => {
                             menu={{ items: userMenuItems }}
                             trigger={['click']}>
                             <div className='user-profile-button d-flex gap-2 align-items-center'>
-                                {user.isAdmin ? <SafetyCertificateOutlined className=" text-danger fs-5" /> : <UserOutlined  className=" text-bg-success fs-5" />}
+                                {user.isAdmin ? <SafetyCertificateOutlined className=" text-danger fs-5" /> : <UserOutlined  className=" text-success fs-5" />}
                                 <span className=" text-nowrap">Ваш профіль</span>
                                 <DownOutlined />
                             </div>
