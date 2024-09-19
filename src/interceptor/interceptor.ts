@@ -36,8 +36,8 @@ export const SetupInterceptors = () => {
 
 
         default: {
-            const location = window.location.pathname.slice(1);
-            window.location.replace(`/error?status=${status}&title=${status}&subTitle=${error.message}${location === '' ? '&location=homepage' : ''}`);
+           // const location = window.location.pathname.slice(1);
+          //  window.location.replace(`/error?status=${status}&title=${status}&subTitle=${error.message}${location === '' ? '&location=homepage' : ''}`);
             message.error(`${error.status} ${error.message}`)
         }
 
