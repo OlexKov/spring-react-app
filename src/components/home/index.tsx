@@ -7,14 +7,16 @@ import { Pagination } from 'antd';
 import { paginatorConfig } from '../../helpers/constants';
 import { SearchData } from '../../models/SearchData';
 //import { FilterData } from '../../models/FilterData';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getQueryString } from '../../helpers/common-methods';
 import { categoryService } from '../../services/categoryService';
+import user from '../../store/userStore'
+import { observer } from 'mobx-react';
 
 
 
-
-const HomePage: React.FC = () => {
+const HomePage: React.FC = observer(() => {
+  const navigate = useNavigate();
   const defaultSortTable = "id"
   const [data, setData] = useState<IProduct[]>()
   const [total, setTotal] = useState<number>(0)
@@ -78,7 +80,7 @@ const HomePage: React.FC = () => {
       <h3 className=' text-muted'>We found {total} product{total == 1 ? "" : "s"}</h3>
       <div className='d-flex flex-column gap-3'>
         {
-          data?.map(x => <HorisontalProduct product={x} />)
+          data?.map(x => <HorisontalProduct key={x.id} onEdit={user.isAdmin?()=>{navigate(`/products/create?id=${x.id}`)}:undefined} product={x} />)
         }
       </div>
       {total > 0 &&
@@ -96,6 +98,6 @@ const HomePage: React.FC = () => {
           className='mt-4' />
       }
     </div>);
-};
+});
 
 export default HomePage;
