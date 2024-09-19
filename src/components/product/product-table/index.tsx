@@ -11,18 +11,16 @@ import { SearchData } from '../../../models/SearchData';
 import { categoryService } from '../../../services/categoryService';
 import { SearchOutlined } from '@ant-design/icons';
 import { getQueryString } from '../../../helpers/common-methods';
+import { FilterData } from '../../../models/FilterData';
 
-interface filterData {
-  text: string,
-  value: string
-}
+
 
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
 const ProductTable: React.FC = () => {
   const defaultSortTable = "id"
   const navigate = useNavigate();
   const [data, setData] = useState<IProduct[]>()
-  const [filters, setFilters] = useState<filterData[]>([])
+  const [filters, setFilters] = useState<FilterData[]>([])
   const [searchText, setSearchText] = useState('');
   const [searchParams, setSearchParams] = useSearchParams('');
   const mainElement = document.querySelector('main') as HTMLElement;
@@ -148,7 +146,7 @@ const ProductTable: React.FC = () => {
       title: 'Price',
       key: 'price',
       dataIndex: 'price',
-      render: (price: number) => <span> {price.toPrecision(4)}</span>,
+      render: (price: number) => <span> {price.toFixed(2)}</span>,
       sorter: true,
       filteredValue: null
     },
@@ -156,7 +154,7 @@ const ProductTable: React.FC = () => {
       title: 'Discount',
       key: 'discount',
       dataIndex: 'discount',
-      render: (discount: number) => <span> {discount.toPrecision(4)}</span>,
+      render: (discount: number) => <span> {discount.toFixed(2)}</span>,
       sorter: true,
       filteredValue: null
     },
@@ -165,7 +163,7 @@ const ProductTable: React.FC = () => {
       key: 'action',
       render: (element: ICategory) =>
         <Space>
-          <Button onClick={() => deleteCategory(element.id)} danger type="primary">Delete</Button>
+          <Button onClick={() => deleteProduct(element.id)} danger type="primary">Delete</Button>
           <Button onClick={() => navigate(`create?id=${element.id}`)} type='primary'>Edit</Button>
         </Space>
     },
@@ -206,7 +204,7 @@ const ProductTable: React.FC = () => {
     }
   }
 
-  const deleteCategory = async (id: number) => {
+  const deleteProduct = async (id: number) => {
     const result = await productService.delete(id)
     if (result.status == 200) {
       const product = data?.find(x => x.id === id);

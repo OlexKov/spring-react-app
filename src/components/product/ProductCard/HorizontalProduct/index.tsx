@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { ProductViewProps } from '../../models/Props';
-import { DateTime } from '../../helpers/DateTime';
-import { APP_ENV } from '../../env';
+import { ProductViewProps } from '../../../../models/Props';
+import { DateTime } from '../../../../helpers/DateTime';
+import { APP_ENV } from '../../../../env';
 import { Tag } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import FavoriteButton from '../favorite-button';
+import FavoriteButton from '../../../favorite-button';
 
 const imagesUrl = APP_ENV.SERVER_HOST + APP_ENV.IMAGES_FOLDER;
-const Product: React.FC<ProductViewProps> = ({ product, onEdit, onClick = () => { }, onFavoriteChange = () => { } }) => {
+const HorisontalProduct: React.FC<ProductViewProps> = ({ product, onEdit, onClick = () => { }, onFavoriteChange = () => { } }) => {
 
   const date = new DateTime(product.creationTime);
   const firstImage = product.images.find(x => x.priority === 0)?.name
@@ -43,7 +43,7 @@ const Product: React.FC<ProductViewProps> = ({ product, onEdit, onClick = () => 
               fontWeight: 'lighter'
               , padding: "2px 5px 2px 5px",
               borderWidth: 0,
-              backgroundColor: 'lightgray'
+              backgroundColor: 'lightgreen'
             }}>-{product.discount.toFixed(2)} грн.</Tag>}
 
         </div>
@@ -62,7 +62,6 @@ const Product: React.FC<ProductViewProps> = ({ product, onEdit, onClick = () => 
     </div>
 )}
 
-
-export default Product;
+export default HorisontalProduct;
 
 
