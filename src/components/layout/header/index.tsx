@@ -3,7 +3,7 @@ import logo from '../../../../logo.png';
 import { Menu } from "../../menu";
 import { observer } from "mobx-react";
 import user from '../../../store/userStore'
-import { DownOutlined, FlagOutlined, HeartOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { DownOutlined, FlagOutlined, HeartOutlined, LogoutOutlined, SafetyCertificateOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Dropdown } from "antd";
 import { APP_ENV } from "../../../env";
 import { storageService } from "../../../services/storageService";
@@ -18,7 +18,7 @@ interface MenuItem {
 }
 const Header: React.FC = observer(() => {
     const navigate = useNavigate();
-    
+
     const logout = async () => {
         storageService.removeTokens();
         user.clearUserData();
@@ -69,19 +69,19 @@ const Header: React.FC = observer(() => {
                 </div>
 
                 <div className=' d-flex gap-5 mx-4 '>
-                   {!user.isAdmin &&  <HeartOutlined className='favourite-button' onClick={() => navigate('/favorites')} />}
+                    {!user.isAdmin && <HeartOutlined className='favourite-button' onClick={() => navigate('/favorites')} />}
                     {(user.isAuthorized &&
                         <Dropdown
                             menu={{ items: userMenuItems }}
                             trigger={['click']}>
                             <div className='user-profile-button d-flex gap-2 align-items-center'>
-                                <UserOutlined />
+                                {user.isAdmin ? <SafetyCertificateOutlined className=" text-danger fs-5" /> : <UserOutlined  className=" text-bg-success fs-5" />}
                                 <span className=" text-nowrap">Ваш профіль</span>
                                 <DownOutlined />
                             </div>
                         </Dropdown>) ||
                         <div className='user-profile-button d-flex gap-2 align-items-center ' onClick={() => navigate('/login')}>
-                            <UserOutlined />
+                            <UserOutlined className="fs-5" />
                             <span className=" text-nowrap">Ваш профіль</span>
                         </div>}
                 </div>
