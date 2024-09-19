@@ -9,7 +9,7 @@ import { SearchData } from '../../models/SearchData';
 //import { FilterData } from '../../models/FilterData';
 import { useSearchParams } from 'react-router-dom';
 import { getQueryString } from '../../helpers/common-methods';
-//import { categoryService } from '../../services/categoryService';
+import { categoryService } from '../../services/categoryService';
 
 
 
@@ -37,18 +37,18 @@ const HomePage: React.FC = () => {
     if (mainElement !== null) { mainElement.scrollTo({ top: 0, behavior: 'smooth' }); }
   }, [data])
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const result = await categoryService.get(1, 0)
-  //     if (result.status == 200) {
-  //       const flt = result.data.itemsList.map(x => ({ value: x.name.toLocaleLowerCase(), text: x.name }))
-  //       setFilters(flt);
-  //       if (!search.categories) {
-  //         setSearch({ ...search, categories: flt.map(x => x.value) })
-  //       }
-  //     }
-  //   })()
-  // }, [])
+  useEffect(() => {
+    (async () => {
+      const result = await categoryService.get(1, 0)
+      if (result.status == 200) {
+        const flt = result.data.itemsList.map(x => ({ value: x.name.toLocaleLowerCase(), text: x.name }))
+        //setFilters(flt);
+        if (!search.categories) {
+          setSearch({ ...search, categories: flt.map(x => x.value) })
+        }
+      }
+    })()
+  }, [])
 
 
   useEffect(() => {
