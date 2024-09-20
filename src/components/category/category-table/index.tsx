@@ -6,6 +6,7 @@ import { paginatorConfig } from '../../../helpers/constants';
 import { categoryService } from '../../../services/categoryService';
 import { APP_ENV } from '../../../env';
 import { getQueryString } from '../../../helpers/common-methods';
+import { DeleteDialog } from '../../common-components/DeleteDialog';
 
 
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
@@ -59,7 +60,9 @@ const CategoryTable: React.FC = () => {
       key: 'action',
       render: (element: ICategory) =>
         <Space>
-          <Button onClick={() => deleteCategory(element.id)} danger type="primary">Delete</Button>
+          <DeleteDialog title={"Are you sure?"}
+                        description={`Delete "${element.name}" category?` }
+                        onSubmit ={() => deleteCategory(element.id)}  />
           <Button onClick={() => navigate(`create?id=${element.id}`)} type='primary'>Edit</Button>
         </Space>
     },
