@@ -1,4 +1,4 @@
-
+import { AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react'
 import user from '../../store/userStore'
 //import { accountService } from '../../services/accountService'
@@ -6,40 +6,51 @@ import { message } from 'antd'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { observer } from 'mobx-react'
 import { FavoriteButtonProps } from '../../models/Props'
+import { accountService } from '../../services/accountService';
+import { storageService } from '../../services/storageService';
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ product, onChange = () => { } }) => {
-    const [favorite, setFavorite] = useState<boolean>(false)
+
 
     useEffect(() => {
+        setFavorite(isFavorite())
+    }, [user.isAuthorized])
+
+    const isFavorite = (): boolean => {
         if (user.isAuthorized) {
-          //  setFavorite(product?.isFavorite || false);
+            return product?.favoriteInUsers.includes(user.id || 0) || false;
         }
         else {
-          //  if (storageService.isLocalFavorites() && product) {
-          //      setFavorite(storageService.getLocalFavorites().find(x=>x.id === product.id) !== undefined)
-           // }
-           // else
-           //     setFavorite(false)
+            if (storageService.isLocalFavorites() && product) {
+                return storageService.getLocalFavorites().includes(product.id)
+            }
+            else
+                return false
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.isAuthorized, product])
-
+    }
+    const [favorite, setFavorite] = useState<boolean>(isFavorite())
     const favoriteClick = async (e: any) => {
         e.stopPropagation();
         setFavorite(!favorite)
         if (product) {
             if (user.isAuthorized) {
-               // const result = await accountService.toggleFavorite(product.id)
-               // if (result.status !== 200) {
-              //      setFavorite(!favorite)
-              //      return
-              //  }
+                let result: AxiosResponse<number, any> | undefined = undefined;
+                if (favorite) {
+                    result = await accountService.removeFavorite(product.id)
+                }
+                else {
+                    result = await accountService.addFavorite(product.id)
+                }
+                if (result?.status !== 200) {
+                    setFavorite(!favorite)
+                    return;
+                }
             }
             else {
-               // storageService.toggleFavorites(({id:product.id,price:product.price,date:product.date}))
+                 storageService.toggleFavorites(product.id)
             }
         }
-        onChange(product?.id,!favorite)
+        onChange(product?.id, !favorite)
         message.success(favorite ? 'Оголошення видалено з обраних' : 'Оголошення додано до обраних')
     }
     return (

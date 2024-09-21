@@ -60,7 +60,7 @@ const CategoryTable: React.FC = () => {
       key: 'action',
       render: (element: ICategory) =>
         <Space>
-          <DeleteDialog title={"Are you sure?"}
+          <DeleteDialog title={"re you sure?"}
                         description={`Delete "${element.name}" category?` }
                         onSubmit ={() => deleteCategory(element.id)}  />
           <Button onClick={() => navigate(`create?id=${element.id}`)} type='primary'>Edit</Button>

@@ -11,5 +11,7 @@ export const accountService = {
 
     login: (model:LoginModel) => TryError<LoginResponseModel>(()=>  axios.post<LoginResponseModel>(accountsAPIUrl + '/sign-in',  model ,formPostConfig)),
     register:(user:UserRegisterModel)=> TryError(()=> axios.post(accountsAPIUrl + '/sign-up', user,formPostConfig)),
+    addFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/add-favorite/${id}`)),
+    removeFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/remove-favorite/${id}`)),
    
 }

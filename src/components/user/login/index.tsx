@@ -71,6 +71,7 @@ export const Login: React.FC = () => {
                     </Form.Item>
 
                     <Form.Item
+                         valuePropName='checked'
                          name='remember'>
                         <Checkbox  onChange={(e: CheckboxChangeEvent) => setRemember(e.target.checked)}>Запам'ятати мене</Checkbox>
                     </Form.Item>

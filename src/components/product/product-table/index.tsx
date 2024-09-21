@@ -163,12 +163,12 @@ const ProductTable: React.FC = () => {
       title: 'Actions',
       key: 'action',
       render: (element: ICategory) =>
-        <Space>
+        <div className='d-flex gap-2'>
           <DeleteDialog title={"Are you sure?"}
-                        description={`Delete "${element.name}" category?` }
-                        onSubmit ={() => deleteProduct(element.id)}  />
+          description={`Delete "${element.name}" category?`}
+          onSubmit={async() => deleteProduct(element.id)} />
           <Button onClick={() => navigate(`create?id=${element.id}`)} type='primary'>Edit</Button>
-        </Space>
+        </div>
     },
   ];
 
@@ -207,7 +207,7 @@ const ProductTable: React.FC = () => {
     }
   }
 
-  const deleteProduct = async (id: number) => {
+  const deleteProduct = async (id: number):Promise<void> => {
     const result = await productService.delete(id)
     if (result.status == 200) {
       const product = data?.find(x => x.id === id);

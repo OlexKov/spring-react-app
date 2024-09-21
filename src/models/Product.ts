@@ -10,4 +10,5 @@ export interface IProduct{
     images:IProductImage[];
     categoryId:number;
     categoryName:string;
+    favoriteInUsers:number[]
 }

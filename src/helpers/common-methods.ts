@@ -4,9 +4,8 @@ import { GetProp, UploadFile, UploadProps } from "antd";
 import { AxiosResponse } from "axios"
 
 
-export const TryError = <T>(funct: Function): AxiosResponse<T, any> => {
-    return funct().catch((error: any) => error)
-}
+export const TryError = async <T>(funct: Function): Promise<AxiosResponse<T, any>> => await funct().catch((error: any) => error)
+
 
 export const getBase64 = (file: FileType): Promise<string> =>
     new Promise((resolve, reject) => {
