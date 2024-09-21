@@ -7,13 +7,11 @@ import { categoryService } from '../../../services/categoryService';
 import { APP_ENV } from '../../../env';
 import { getQueryString } from '../../../helpers/common-methods';
 import { DeleteDialog } from '../../common-components/DeleteDialog';
+import { PagintionData } from '../../../models/PaginationData';
 
 
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
-interface PagintionData {
-  page: number,
-  pageSize: number
-}
+
 const CategoryTable: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<ICategory[]>()

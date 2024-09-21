@@ -39,8 +39,7 @@ export const storageService = {
     toggleFavorites: (favorite: number) => {
         let favs: number[] = storageService.getLocalFavorites() || [];
         if (favs.includes(favorite)) {
-            storageService.setLocalFavorites(favs.filter(x => x !== favorite));
-            return
+            favs = favs.filter(x => x !== favorite);
         }
         else {
             favs.push(favorite)

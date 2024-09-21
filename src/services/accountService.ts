@@ -5,6 +5,8 @@ import { formPostConfig } from "../helpers/constants";
 import { LoginModel } from "../models/LoginModel";
 import { LoginResponseModel } from "../models/LoginResponseModel";
 import { UserRegisterModel } from "../models/UserRegisterModel";
+import { IPaginationResponse } from "../models/PaginarionResponse";
+import { IProduct } from "../models/Product";
 
 const accountsAPIUrl = APP_ENV.ACCOUNT_API_URL;
 export const accountService = {
@@ -13,5 +15,5 @@ export const accountService = {
     register:(user:UserRegisterModel)=> TryError(()=> axios.post(accountsAPIUrl + '/sign-up', user,formPostConfig)),
     addFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/add-favorite/${id}`)),
     removeFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/remove-favorite/${id}`)),
-   
+    getFavorites:()=> TryError<IPaginationResponse<IProduct>>(()=> axios.get<IPaginationResponse<IProduct>>(accountsAPIUrl + `/get-favorites`)),
 }

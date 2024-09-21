@@ -12,6 +12,7 @@ import { Login } from './components/user/login';
 import { Registration } from './components/user/registration';
 import ProductTable from './components/product/product-table';
 import AdminProtectedRoute from './components/protected-routes/AdminProtectedRoute';
+import FavoritesPage from './components/favorites';
 
 function App() {
   SetupInterceptors();
@@ -22,13 +23,14 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="/categories/create" element={
-            <AdminProtectedRoute children={<CategoryCreation />}/>}/>
+            <AdminProtectedRoute children={<CategoryCreation />} />} />
           <Route path="/categories" element={
-            <AdminProtectedRoute children={<CategoryTable />}/>}/>
+            <AdminProtectedRoute children={<CategoryTable />} />} />
           <Route path="/products" element={
-            <AdminProtectedRoute children={ <ProductTable />}/>}/>
+            <AdminProtectedRoute children={<ProductTable />} />} />
           <Route path="/products/create" element={
-            <AdminProtectedRoute children={ <ProductCreate />}/>}/>
+            <AdminProtectedRoute children={<ProductCreate />} />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="*" element={
