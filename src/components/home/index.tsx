@@ -49,8 +49,8 @@ const HomePage: React.FC = observer(() => {
           setSearch({ ...search, categories: flt.map(x => x.value) })
         }
       }
-    })()
-  }, [])
+    })()},[])
+  
 
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const HomePage: React.FC = observer(() => {
 
   const getData = async () => {
     const result = await productService.search(search)
+    console.log(result.data.itemsList)
     if (result.status == 200) {
       setData(result.data.itemsList)
       setTotal(result.data.totalElements)
