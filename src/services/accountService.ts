@@ -15,5 +15,5 @@ export const accountService = {
     register:(user:UserRegisterModel)=> TryError(()=> axios.post(accountsAPIUrl + '/sign-up', user,formPostConfig)),
     addFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/add-favorite/${id}`)),
     removeFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/remove-favorite/${id}`)),
-    getFavorites:()=> TryError<IPaginationResponse<IProduct>>(()=> axios.get<IPaginationResponse<IProduct>>(accountsAPIUrl + `/get-favorites`)),
+    getFavorites:(page:number,size:number)=> TryError<IPaginationResponse<IProduct>>(()=> axios.get<IPaginationResponse<IProduct>>(accountsAPIUrl + `/get-favorites/${page}/${size}`)),
 }

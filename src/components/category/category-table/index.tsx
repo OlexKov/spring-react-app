@@ -8,6 +8,7 @@ import { APP_ENV } from '../../../env';
 import { getQueryString } from '../../../helpers/common-methods';
 import { DeleteDialog } from '../../common-components/DeleteDialog';
 import { PagintionData } from '../../../models/PaginationData';
+import { DateTime } from '../../../helpers/DateTime';
 
 
 const imageFolder = `${APP_ENV.SERVER_HOST}${APP_ENV.IMAGES_FOLDER}`
@@ -51,7 +52,8 @@ const CategoryTable: React.FC = () => {
       title: 'Date',
       key: 'date',
       dataIndex: 'creationTime',
-      render: (date: string) => <span> {date.slice(0, 10)}</span>
+      render: (date: string) => <div className='d-flex flex-column gap-2 text-center'> {new DateTime(date).ShortDate} {new DateTime(date).FullTime}</div>,
+      width:100
     },
     {
       title: 'Actions',

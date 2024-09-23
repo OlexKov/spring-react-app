@@ -50,8 +50,8 @@ const HorisontalProduct: React.FC<ProductViewProps> = ({ product, onEdit, onClic
         <div className='d-flex justify-content-between'>
           <div style={{ fontSize: 13 }} className='d-flex  gap-2 text-start mt-auto'>
             {date.isToday
-              ? <span>Сьогодні о {date.getTime}</span>
-              : <span>{date.getDate}</span>}
+              ? <span>Сьогодні о {date.Time}</span>
+              : <span>{date.date}</span>}
           </div>
           {onEdit
             ? <EditOutlined className='ms-3 fs-4 text-danger' onClick={onCardEdit} />

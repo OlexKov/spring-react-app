@@ -42,7 +42,7 @@ const FavoritesPage: React.FC = observer(() => {
   const getData = async () => {
     let result: AxiosResponse<IPaginationResponse<IProduct>, any> | undefined = undefined;
     if (user.isAuthorized) {
-      result = await accountService.getFavorites()
+      result = await accountService.getFavorites(pagination.page, pagination.pageSize)
     }
     else if (storageService.isLocalFavorites()) {
       result = await productService.getByIds(pagination.page, pagination.pageSize, storageService.getLocalFavorites())
