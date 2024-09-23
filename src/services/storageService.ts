@@ -2,11 +2,10 @@ import { APP_ENV } from "../env";
 
 const accessKey = APP_ENV.ACCESS_KEY;
 const favouritesKey = APP_ENV.FAVORITES_KEY;
-const isSessionStorage = () => sessionStorage.getItem(accessKey) !== null;
 
 export const storageService = {
-    saveTokens: (accessToken: string) => {
-        if (isSessionStorage()) {
+    saveToken: async (accessToken: string,session:boolean ) => {
+        if (session) {
             sessionStorage.setItem(accessKey, accessToken);
             localStorage.removeItem(accessKey);
         }
@@ -14,11 +13,10 @@ export const storageService = {
             localStorage.setItem(accessKey, accessToken);
             sessionStorage.removeItem(accessKey);
         }
+      
     },
 
     getAccessToken: () => sessionStorage.getItem(accessKey) || localStorage.getItem(accessKey),
-
-    setTemporalyTokens: (accessToken: string) => sessionStorage.setItem(accessKey, accessToken),
 
     removeTokens: () => {
         localStorage.removeItem(accessKey);
@@ -34,8 +32,6 @@ export const storageService = {
         return fav ? JSON.parse(fav) : []
     },
 
-    setLocalFavorites: (favorites: number[]) => localStorage.setItem(favouritesKey, JSON.stringify(favorites)),
-
     toggleFavorites: (favorite: number) => {
         let favs: number[] = storageService.getLocalFavorites() || [];
         if (favs.includes(favorite)) {
@@ -44,7 +40,7 @@ export const storageService = {
         else {
             favs.push(favorite)
         }
-        storageService.setLocalFavorites(favs);
-        // localStorage.removeItem(favouritesKey)
+        localStorage.setItem(favouritesKey, JSON.stringify(favs))
     },
+    clearFavorites:() => localStorage.removeItem(favouritesKey)
 }

@@ -1,18 +1,19 @@
 import { jwtDecode } from "jwt-decode";
-import { storageService } from "../services/storageService";
 import { IUser } from "../models/IUser";
 import { makeAutoObservable } from "mobx";
+import { accountService } from "../services/accountService";
+import { storageService } from "../services/storageService";
 
 class UserStore {
-    user: IUser | undefined;
+    private user: IUser | undefined;
+    private favoritesCount: number;
     constructor() {
-        const token = storageService.getAccessToken();
-        if (token && token !== '') {
-            this.setUserData(token);
-        }
-        else this.user = undefined
+        this.user = undefined;
+        this.favoritesCount = 0;
         makeAutoObservable(this)
     }
+    get favCount(): number  { return this.favoritesCount };
+    set favCount(count: number) { this.favoritesCount = count }
     get id(): number | undefined { return this.user?.id };
     get name(): string | undefined { return this.user?.name };
     get username(): string | undefined { return this.user?.username };
@@ -23,20 +24,35 @@ class UserStore {
     get avatar(): string | undefined { return this.user?.image };
     get isAdmin(): boolean { return this.user?.roles.includes('Admin') || false };
     get isAuthorized(): boolean { return this.user ? true : false };
-    setUserData(token: string) {
-        const data: IUser = jwtDecode<IUser>(token);
-        this.user = {
-            id: data.id,
-            name: data.name,
-            surname: data.surname,
-            email: data.email,
-            roles: data.roles,
-            birthdate: data.birthdate,
-            image: data.image,
-            username:data.username
+    async setUserData(token: string | null | undefined) {
+        if (token && token !== '') {
+            const data: IUser = jwtDecode<IUser>(token);
+            this.user = {
+                id: data.id,
+                name: data.name,
+                surname: data.surname,
+                email: data.email,
+                roles: data.roles,
+                birthdate: data.birthdate,
+                image: data.image,
+                username: data.username
+            }
+            if(this.user){
+                const result = await accountService.addFavorites(storageService.getLocalFavorites());
+                if (result.status === 200) {
+                    this.favCount = result.data;
+                    storageService.clearFavorites();
+                }
+            }
+        }
+        else {
+            this.user = undefined;
         }
     };
-    clearUserData() { this.user = undefined }
+    clearUserData() {
+        this.user = undefined
+        this.favoritesCount = 0;
+    }
 }
 // eslint-disable-next-line import/no-anonymous-default-export
 export default new UserStore();

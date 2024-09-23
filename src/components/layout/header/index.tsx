@@ -4,7 +4,7 @@ import { Menu } from "../../menu";
 import { observer } from "mobx-react";
 import user from '../../../store/userStore'
 import { DownOutlined, FlagOutlined, HeartOutlined, LogoutOutlined, SafetyCertificateOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Dropdown } from "antd";
+import { Avatar, Badge, Button, Dropdown } from "antd";
 import { APP_ENV } from "../../../env";
 import { storageService } from "../../../services/storageService";
 import { ReactNode, useEffect, useState } from "react";
@@ -69,13 +69,16 @@ const Header: React.FC = observer(() => {
                 </div>
 
                 <div className=' d-flex gap-5 mx-4 '>
-                    {!user.isAdmin && <HeartOutlined className='favourite-button' onClick={() => navigate('/favorites')} />}
+                    {!user.isAdmin &&
+                        <Badge size="small" count={user.favCount}>
+                            <HeartOutlined className='favourite-button' onClick={() => navigate('/favorites')} />
+                        </Badge>}
                     {(user.isAuthorized &&
                         <Dropdown
                             menu={{ items: userMenuItems }}
                             trigger={['click']}>
                             <div className='user-profile-button d-flex gap-2 align-items-center'>
-                                {user.isAdmin ? <SafetyCertificateOutlined className=" text-danger fs-5" /> : <UserOutlined  className=" text-success fs-5" />}
+                                {user.isAdmin ? <SafetyCertificateOutlined className=" text-danger fs-5" /> : <UserOutlined className=" text-success fs-5" />}
                                 <span className=" text-nowrap">Ваш профіль</span>
                                 <DownOutlined />
                             </div>

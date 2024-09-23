@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { accountService } from '../../../services/accountService';
 import { Button, Checkbox, Divider, Form, Input, message } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import user from '../../../store/userStore'
 import { LoginModel } from '../../../models/LoginModel';
 import { storageService } from '../../../services/storageService';
+import user from '../../../store/userStore'
 
 export const Login: React.FC = () => {
     const [remember, setRemember] = useState<boolean>(false);
@@ -14,12 +14,7 @@ export const Login: React.FC = () => {
     const onFinish = async (loginModel: LoginModel) => {
         const responce = await accountService.login(loginModel);
         if (responce.status === 200) {
-            if (remember) {
-                storageService.saveTokens(responce.data.token);
-            }
-            else {
-                storageService.setTemporalyTokens(responce.data.token)
-            }
+            await storageService.saveToken(responce.data.token, !remember);
             user.setUserData(responce.data.token)
             navigate('/')
             message.success('Ви успішно увійшли в свій акаунт')
@@ -27,10 +22,10 @@ export const Login: React.FC = () => {
     }
     return (
         <>
-        <div className=' w-70 mx-auto my-4'>
-         
-        </div>
-           
+            <div className=' w-70 mx-auto my-4'>
+
+            </div>
+
             <div className='w-50 mx-auto'>
                 <Divider className='fs-3 border-dark-subtle mb-5' orientation="left">Логін</Divider>
                 <Form
@@ -67,13 +62,13 @@ export const Login: React.FC = () => {
                             },
                         ]}
                     >
-                        <Input.Password  type='large' />
+                        <Input.Password type='large' />
                     </Form.Item>
 
                     <Form.Item
-                         valuePropName='checked'
-                         name='remember'>
-                        <Checkbox  onChange={(e: CheckboxChangeEvent) => setRemember(e.target.checked)}>Запам'ятати мене</Checkbox>
+                        // valuePropName='checked'
+                        name='remember'>
+                        <Checkbox checked={remember} onChange={(e: CheckboxChangeEvent) => setRemember(e.target.checked)}>Запам'ятати мене</Checkbox>
                     </Form.Item>
                     <div className='buttons-block'>
                         <Button type="primary" htmlType="submit">

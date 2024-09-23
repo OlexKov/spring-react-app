@@ -13,10 +13,13 @@ import { Registration } from './components/user/registration';
 import ProductTable from './components/product/product-table';
 import AdminProtectedRoute from './components/protected-routes/AdminProtectedRoute';
 import FavoritesPage from './components/favorites';
+import user from './store/userStore'
+import { storageService } from './services/storageService';
 
 function App() {
   SetupInterceptors();
-
+  user.favCount = storageService.getLocalFavorites().length || 0;
+  user.setUserData(storageService.getAccessToken());
   return (
     <>
       <Routes>

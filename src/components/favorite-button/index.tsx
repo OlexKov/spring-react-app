@@ -49,6 +49,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = observer(({ product, onCha
             else {
                  storageService.toggleFavorites(product.id)
             }
+            favorite ? user.favCount-- : user.favCount++;
         }
         onChange(product?.id, !favorite)
         message.success(favorite ? 'Оголошення видалено з обраних' : 'Оголошення додано до обраних')
