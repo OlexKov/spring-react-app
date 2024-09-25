@@ -12,7 +12,7 @@ class UserStore {
         this.favoritesCount = 0;
         makeAutoObservable(this)
     }
-    get favCount(): number  { return this.favoritesCount };
+    get favCount(): number { return this.favoritesCount };
     set favCount(count: number) { this.favoritesCount = count }
     get id(): number | undefined { return this.user?.id };
     get name(): string | undefined { return this.user?.name };
@@ -37,7 +37,7 @@ class UserStore {
                 image: data.image,
                 username: data.username
             }
-            if(this.user && !this.isAdmin){
+            if (this.user && !this.isAdmin) {
                 const result = await accountService.addFavorites(storageService.getLocalFavorites());
                 if (result.status === 200) {
                     this.favCount = result.data;
@@ -51,7 +51,9 @@ class UserStore {
     };
     clearUserData() {
         this.user = undefined
-        this.favoritesCount = 0;
+        if (!this.isAdmin) {
+            this.favoritesCount = storageService.getLocalFavorites().length;
+        }
     }
 }
 // eslint-disable-next-line import/no-anonymous-default-export
