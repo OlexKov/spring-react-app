@@ -50,10 +50,8 @@ class UserStore {
         }
     };
     clearUserData() {
+        this.favoritesCount = storageService.getLocalFavorites().length;
         this.user = undefined
-        if (!this.isAdmin) {
-            this.favoritesCount = storageService.getLocalFavorites().length;
-        }
     }
 }
 // eslint-disable-next-line import/no-anonymous-default-export
