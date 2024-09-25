@@ -37,7 +37,7 @@ class UserStore {
                 image: data.image,
                 username: data.username
             }
-            if(this.user){
+            if(this.user && !this.isAdmin){
                 const result = await accountService.addFavorites(storageService.getLocalFavorites());
                 if (result.status === 200) {
                     this.favCount = result.data;
