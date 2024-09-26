@@ -6,7 +6,9 @@ const INVOICE_API_URL: string = import.meta.env.VITE_APP_INVOICE_API_URL;
 const FILES_FOLDER: string = import.meta.env.VITE_APP_FILES_FOLDER;
 const ACCESS_KEY: string = import.meta.env.VITE_APP_ACCESS_KEY;
 const ACCOUNT_API_URL: string = import.meta.env.VITE_APP_ACCOUNTS_API_URL;
-const FAVORITES_KEY:string = import.meta.env.VITE_APP_FAVORITES_KEY;
+const FAVORITES_KEY: string = import.meta.env.VITE_APP_FAVORITES_KEY;
+const APP_MODE: string = import.meta.env.VITE_APP_APP_MODE;
+const BASKET_KEY: string = import.meta.env.VITE_APP_BASKET;
 const APP_ENV = {
     SERVER_HOST,
     CATEGORIES_API_URL,
@@ -16,7 +18,9 @@ const APP_ENV = {
     PRODUCTS_API_URL,
     ACCESS_KEY,
     ACCOUNT_API_URL,
-    FAVORITES_KEY
+    FAVORITES_KEY,
+    APP_MODE,
+    BASKET_KEY
 };
 
-export {APP_ENV}
+export { APP_ENV }

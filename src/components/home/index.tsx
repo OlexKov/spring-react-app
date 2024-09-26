@@ -1,5 +1,5 @@
 import * as React from 'react';
-import HorisontalProduct from '../product/ProductCard/horizontalProduct';
+import HorisontalProduct from '../product/ProductCard/horizontal-product';
 import { IProduct } from '../../models/Product';
 import { useEffect, useState } from 'react';
 import { productService } from '../../services/productService';

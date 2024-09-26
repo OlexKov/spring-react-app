@@ -1,5 +1,5 @@
 .user-profile-button,
-.favourite-button {
+.icon-button {
   font-size: 24px;
   color: white;
 }
@@ -10,7 +10,7 @@
 
 
 .user-profile-button:hover,
-.favourite-button:hover {
+.icon-button:hover {
   color: gray;
   cursor: pointer;
 }

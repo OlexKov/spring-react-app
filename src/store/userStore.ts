@@ -50,7 +50,6 @@ class UserStore {
         }
     };
     clearUserData() {
-        this.favoritesCount = storageService.getLocalFavorites().length;
         this.user = undefined
     }
 }
