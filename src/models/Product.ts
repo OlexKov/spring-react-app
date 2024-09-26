@@ -11,4 +11,5 @@ export interface IProduct{
     categoryId:number;
     categoryName:string;
     favoriteInUsers:number[]
+    inUsersBasket:number[]
 }

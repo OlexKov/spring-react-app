@@ -1,9 +1,9 @@
 import { APP_ENV } from "../env";
-import { BasketProduct } from "../models/BasketProduct";
+import { CartProduct } from "../models/CartProduct";
 
 const accessKey = APP_ENV.ACCESS_KEY;
 const favouritesKey = APP_ENV.FAVORITES_KEY;
-const basketKey = APP_ENV.BASKET_KEY;
+const cartKey = APP_ENV.CART_KEY;
 
 export const storageService = {
     saveToken: async (accessToken: string, session: boolean) => {
@@ -47,16 +47,16 @@ export const storageService = {
     clearFavorites: () => localStorage.removeItem(favouritesKey),
 
     //---------------------Bascket-------------------------------------------------
-    isLocalBasket: (): boolean => localStorage.getItem(basketKey) ? true : false,
+    isLocalCart: (): boolean => localStorage.getItem(cartKey) ? true : false,
 
-    getLocalBasket: (): BasketProduct[] => {
-        const backet = localStorage.getItem(basketKey);
+    getLocalCart: (): CartProduct[] => {
+        const backet = localStorage.getItem(cartKey);
         return backet ? JSON.parse(backet) : []
     },
 
-    setLocalBasket: (basket: BasketProduct[]) => {
-        localStorage.setItem(basketKey, JSON.stringify(basket))
+    setLocalCart: (cart: CartProduct[]) => {
+        localStorage.setItem(cartKey, JSON.stringify(cart))
     },
 
-    clearBAsket: () => localStorage.removeItem(basketKey)
+    clearBAsket: () => localStorage.removeItem(cartKey)
 }

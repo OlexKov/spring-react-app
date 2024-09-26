@@ -8,7 +8,7 @@ const ACCESS_KEY: string = import.meta.env.VITE_APP_ACCESS_KEY;
 const ACCOUNT_API_URL: string = import.meta.env.VITE_APP_ACCOUNTS_API_URL;
 const FAVORITES_KEY: string = import.meta.env.VITE_APP_FAVORITES_KEY;
 const APP_MODE: string = import.meta.env.VITE_APP_APP_MODE;
-const BASKET_KEY: string = import.meta.env.VITE_APP_BASKET;
+const CART_KEY: string = import.meta.env.VITE_APP_CART;
 const APP_ENV = {
     SERVER_HOST,
     CATEGORIES_API_URL,
@@ -20,7 +20,7 @@ const APP_ENV = {
     ACCOUNT_API_URL,
     FAVORITES_KEY,
     APP_MODE,
-    BASKET_KEY
+    CART_KEY
 };
 
 export { APP_ENV }

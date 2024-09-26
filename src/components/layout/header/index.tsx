@@ -10,11 +10,11 @@ import { storageService } from "../../../services/storageService";
 import { ReactNode, useEffect, useState } from "react";
 import '../header/header.css'
 import { useSelector } from "react-redux";
-import { RootState } from "../../../store/redux/basket"
-import { BasketProduct } from "../../../models/BasketProduct";
-import { SmallBasketProduct } from "../../product/ProductCard/small-basket-product-card";
+import { RootState } from "../../../store/redux/cart"
+import { CartProduct } from "../../../models/CartProduct";
+import { SmallCartProduct } from "../../product/ProductCard/small-cart-product-card";
 import { useDispatch } from "react-redux";
-import { getTotalDiscount, getTotalPrice, setCount } from "../../../store/redux/basket/redusers/BasketReduser";
+import { getTotalDiscount, getTotalPrice, setCount } from "../../../store/redux/cart/redusers/CartReduser";
 
 interface MenuItem {
     label: ReactNode
@@ -25,7 +25,7 @@ interface MenuItem {
 
 const Header: React.FC = observer(() => {
     const navigate = useNavigate();
-    const basket: BasketProduct[] = useSelector((state: RootState) => state.backetStore.basket);
+    const cart: CartProduct[] = useSelector((state: RootState) => state.cartStore.cart);
     const totalPrice: number = useSelector((state: RootState) => getTotalPrice(state));
     const totalDiscount: number = useSelector((state: RootState) => getTotalDiscount(state));
     const dispatcher = useDispatch();
@@ -87,12 +87,12 @@ const Header: React.FC = observer(() => {
                             <Badge size="small" count={user.favCount}>
                                 <HeartOutlined className='icon-button' onClick={() => navigate('/favorites')} />
                             </Badge>
-                            <Badge size="small" count={basket.length}>
+                            <Badge size="small" count={cart.length}>
                                 <Popover placement="bottom" content={
-                                    basket.length > 0
+                                    cart.length > 0
                                         ? <div className="d-flex flex-column gap-2">
                                             <div style={{maxHeight:400}} className="d-flex flex-column gap-4 overflow-auto">
-                                                {basket.map(x => <SmallBasketProduct onCountClick={onCountChange} basketProduct={x} />)}
+                                                {cart.map(x => <SmallCartProduct onCountClick={onCountChange} cartProduct={x} />)}
                                             </div>
                                             
                                             <div className="d-flex flex-column gap-2">
@@ -102,7 +102,7 @@ const Header: React.FC = observer(() => {
                                         </div>
                                         : null
                                 }>
-                                    <ShoppingCartOutlined className='icon-button' onClick={() => navigate('/basket')} />
+                                    <ShoppingCartOutlined className='icon-button' onClick={() => navigate('/cart')} />
                                 </Popover>
 
                             </Badge>

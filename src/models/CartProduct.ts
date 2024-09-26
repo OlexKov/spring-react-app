@@ -1,6 +1,6 @@
 import { IProduct } from "./Product";
 
-export interface BasketProduct{
+export interface CartProduct{
     product:IProduct,
     count:number
 }

@@ -17,4 +17,8 @@ export const accountService = {
     addFavorites:(ids:number[])=> TryError<number>(()=> axios.post(accountsAPIUrl + `/add-favorite`,ids)),
     removeFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/remove-favorite/${id}`)),
     getFavorites:(page:number,size:number)=> TryError<IPaginationResponse<IProduct>>(()=> axios.get<IPaginationResponse<IProduct>>(accountsAPIUrl + `/get-favorites/${page}/${size}`)),
+    removeFromCart:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/remove-from-cart/${id}`)),
+    addToCart:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/add-to-cart/${id}`)),
+    addAllToCart:(ids:number[])=> TryError<number>(()=> axios.post(accountsAPIUrl + `/add-to-cart`,ids)),
+    getCart:(page:number,size:number)=> TryError<IPaginationResponse<IProduct>>(()=> axios.get<IPaginationResponse<IProduct>>(accountsAPIUrl + `/get-cart/${page}/${size}`)),
 }
