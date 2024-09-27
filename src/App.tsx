@@ -19,7 +19,6 @@ import { useEffect } from 'react';
 import { accountService } from './services/accountService';
 import { useDispatch } from 'react-redux';
 import { addToCartAll } from './store/redux/cart/redusers/CartReduser';
-import UserProtectedRoute from './components/protected-routes/UserProtectedRoute';
 import CartPage from './components/cart';
 
 function App() {
