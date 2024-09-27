@@ -8,6 +8,8 @@ import { storageService } from '../../../services/storageService';
 import user from '../../../store/userStore'
 import { addToCartAll } from '../../../store/redux/cart/redusers/CartReduser';
 import { useDispatch } from 'react-redux';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { APP_ENV } from '../../../env';
 
 export const Login: React.FC = () => {
     const [remember, setRemember] = useState<boolean>(false);
@@ -21,21 +23,21 @@ export const Login: React.FC = () => {
             user.setUserData(responce.data.token);
             if (user.isAuthorized && !user.isAdmin) {
                 const localCard = storageService.getLocalCart();
-                if(localCard.length > 0){
-                    await accountService.addAllToCart(localCard.map(x=>({id:x.product.id,count:x.count})))
+                if (localCard.length > 0) {
+                    await accountService.addAllToCart(localCard.map(x => ({ id: x.product.id, count: x.count })))
                 }
                 const result = await accountService.getCart();
                 if (result.status === 200) {
-                  dispatcher(addToCartAll(result.data))
-                  storageService.clearCart();
+                    dispatcher(addToCartAll(result.data))
+                    storageService.clearCart();
                 }
-              }
+            }
             navigate('/')
             message.success('Ви успішно увійшли в свій акаунт')
         }
     }
     return (
-        <>
+        <GoogleOAuthProvider clientId={APP_ENV.CLIENT_ID}>
             <div className=' w-70 mx-auto my-4'>
             </div>
             <div className='w-50 mx-auto'>
@@ -90,11 +92,20 @@ export const Login: React.FC = () => {
                             <Button >Реєстрація</Button>
                         </Link>
                         <Link to='/fogotpassword'>Забули раполь?</Link>
+                        <GoogleLogin
+                            onSuccess={credentialResponse => {
+                                console.log(credentialResponse);
+                                navigate('/')
+                            }}
+                            onError={() => {
+                                console.log('Login Failed');
+                            }}
+                        />
                     </div>
                 </Form>
             </div>
 
-        </>
+        </GoogleOAuthProvider>
     )
 }
 

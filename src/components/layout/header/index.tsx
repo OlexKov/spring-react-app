@@ -16,6 +16,7 @@ import { SmallCartProduct } from "../../product/ProductCard/small-cart-product-c
 import { useDispatch } from "react-redux";
 import { clearCart, getTotalDiscount, getTotalPrice, setCount } from "../../../store/redux/cart/redusers/CartReduser";
 import { accountService } from "../../../services/accountService";
+import { googleLogout } from '@react-oauth/google';
 
 interface MenuItem {
     label: ReactNode
@@ -36,6 +37,7 @@ const Header: React.FC = observer(() => {
             dispatcher(clearCart());
         }
         user.clearUserData();
+        googleLogout();
         navigate('/')
     }
 
