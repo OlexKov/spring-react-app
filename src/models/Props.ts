@@ -25,13 +25,19 @@ export interface ProductViewProps {
     onEdit?:Function
 }
 
+export interface CartProductViewProps {
+    cartProduct: CartProduct
+    onDelete?: Function
+    onCountChange?:Function
+}
+
 export interface ProductButtonProps{
     product?:IProduct,
     onChange?:Function
     hidden:boolean
 }
 
-export interface CartProductProps{
+export interface SmallCartProductProps{
     cartProduct:CartProduct,
     onCountClick:Function
 }

@@ -101,7 +101,6 @@ const Header: React.FC = observer(() => {
                                             <div style={{maxHeight:400}} className="d-flex flex-column gap-4 overflow-auto">
                                                 {cart.map(x => <SmallCartProduct onCountClick={onCountChange} cartProduct={x} />)}
                                             </div>
-                                            
                                             <div className="d-flex flex-column gap-2">
                                                 <span className="text-danger fs-6">Total price: {totalPrice.toFixed(2)} .грн</span>
                                                 <span className="text-success fs-6">Discount: {totalDiscount.toFixed(2)} .грн</span>
