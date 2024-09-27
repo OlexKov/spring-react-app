@@ -21,7 +21,7 @@ export const SmallCartProduct: React.FC<CartProductProps> = ({ cartProduct,onCou
       <div className='d-flex flex-column gap-1 w-100'>
         <span className=' fs-6 text-muted'>{cartProduct.product.name}</span>
         <div className='d-flex  justify-content-between '>
-          <span>{cartProduct.product.price} .грн</span>
+          <span>{cartProduct.product.price.toFixed(2)} .грн</span>
           <div className='d-flex gap-2'>
             <PlusCircleOutlined className='text-success' onClick={()=>onCountClick(cartProduct.count+1,cartProduct.product.id)}/>
             <span>{cartProduct.count}</span>

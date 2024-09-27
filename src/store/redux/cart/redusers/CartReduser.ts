@@ -3,6 +3,7 @@ import { CartProduct } from '../../../../models/CartProduct';
 import { storageService } from '../../../../services/storageService';
 import { IProduct } from '../../../../models/Product';
 import { RootState } from '../index'
+import user from '../../../userStore'
 
 export interface CartProductData {
     id: number,
@@ -23,13 +24,23 @@ const cartSlice = createSlice({
             else {
                 state.cart.push(({ product: action.payload, count: 1 }));
             }
-            storageService.setLocalCart(state.cart);
+           if(!user.isAuthorized){
+               storageService.setLocalCart(state.cart);
+           } 
+        },
+        addToCartAll: (state, action: PayloadAction<CartProduct[]>) => {
+            state.cart = Array.from(new Set(action.payload));
+           if(!user.isAuthorized){
+               storageService.setLocalCart(state.cart);
+           } 
         },
         removeFromCart: (state, action: PayloadAction<number>) => {
             let product = state.cart.find(x => x.product.id === action.payload)
             if (product) {
                 state.cart = state.cart.filter(x => x.product.id !== action.payload);
-                storageService.setLocalCart(state.cart);
+                if(!user.isAuthorized){
+                    storageService.setLocalCart(state.cart);
+                } 
             }
         },
         setCount: (state, action: PayloadAction<CartProductData>) => {
@@ -41,13 +52,19 @@ const cartSlice = createSlice({
                 else{
                     bproduct.count = action.payload.count;
                 }
-                storageService.setLocalCart(state.cart);
+                if(!user.isAuthorized){
+                    storageService.setLocalCart(state.cart);
+                } 
             }
+        },
+        clearCart: (state) => {
+            state.cart = [];
         }
+
     },
 
 })
-export const { addToCart, removeFromCart, setCount } = cartSlice.actions
+export const { addToCart, removeFromCart, setCount,addToCartAll,clearCart } = cartSlice.actions
 export default cartSlice.reducer
 
 export const getTotalPrice = (state: RootState) => {

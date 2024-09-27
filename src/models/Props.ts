@@ -28,6 +28,7 @@ export interface ProductViewProps {
 export interface ProductButtonProps{
     product?:IProduct,
     onChange?:Function
+    hidden:boolean
 }
 
 export interface CartProductProps{

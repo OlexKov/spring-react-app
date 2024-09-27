@@ -58,5 +58,5 @@ export const storageService = {
         localStorage.setItem(cartKey, JSON.stringify(cart))
     },
 
-    clearBAsket: () => localStorage.removeItem(cartKey)
+    clearCart: () => localStorage.removeItem(cartKey)
 }

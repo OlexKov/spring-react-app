@@ -14,7 +14,8 @@ import { RootState } from "../../../store/redux/cart"
 import { CartProduct } from "../../../models/CartProduct";
 import { SmallCartProduct } from "../../product/ProductCard/small-cart-product-card";
 import { useDispatch } from "react-redux";
-import { getTotalDiscount, getTotalPrice, setCount } from "../../../store/redux/cart/redusers/CartReduser";
+import { clearCart, getTotalDiscount, getTotalPrice, setCount } from "../../../store/redux/cart/redusers/CartReduser";
+import { accountService } from "../../../services/accountService";
 
 interface MenuItem {
     label: ReactNode
@@ -31,6 +32,9 @@ const Header: React.FC = observer(() => {
     const dispatcher = useDispatch();
     const logout = async () => {
         storageService.removeTokens();
+        if(!user.isAdmin){
+            dispatcher(clearCart());
+        }
         user.clearUserData();
         navigate('/')
     }
@@ -69,8 +73,11 @@ const Header: React.FC = observer(() => {
         }
     ]
     const [userMenuItems, setUserMenuItems] = useState<MenuItem[]>(items);
-    const onCountChange = (count: number, id: number) => {
-        dispatcher(setCount({ count, id }))
+    const onCountChange = async (count: number, id: number) => {
+         if(user.isAuthorized){
+            count > 0 ? await accountService.setCount(id,count): await accountService.removeFromCart(id);
+         }
+         dispatcher(setCount({ count, id }))
     }
 
     return (
@@ -100,11 +107,10 @@ const Header: React.FC = observer(() => {
                                                 <span className="text-success fs-6">Discount: {totalDiscount.toFixed(2)} .грн</span>
                                             </div>
                                         </div>
-                                        : null
+                                        : "Корзина порожня :("
                                 }>
                                     <ShoppingCartOutlined className='icon-button' onClick={() => navigate('/cart')} />
                                 </Popover>
-
                             </Badge>
                         </div>}
                     {(user.isAuthorized &&

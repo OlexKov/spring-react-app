@@ -5,11 +5,14 @@ import { APP_ENV } from '../../../../env';
 import { Tag } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import FavoriteButton from '../../../favorite-button';
+import { CartButton } from '../../../add-to-cart-button';
+import user from '../../../../store/userStore'
 
 const imagesUrl = APP_ENV.SERVER_HOST + APP_ENV.IMAGES_FOLDER;
 const HorisontalProduct: React.FC<ProductViewProps> = ({ product, onEdit, onClick = () => { }, onFavoriteChange = () => { } }) => {
 
   const date = new DateTime(product.creationTime);
+  const [cartButtonHide,setCartButtonHideSet] = React.useState<boolean>(true)
   const firstImage = product.images.find(x => x.priority === 0)?.name
   const onCardEdit = (e: any) => {
     e.stopPropagation();
@@ -17,8 +20,11 @@ const HorisontalProduct: React.FC<ProductViewProps> = ({ product, onEdit, onClic
       onEdit(product.id)
     }
   }
+  const mouseEvent = ({type}) => {
+    setCartButtonHideSet(type === 'mouseleave')
+  }
   return (
-    <div className='d-flex gap-2 bg-white p-2 product-view' onClick={() => onClick(product.id)}>
+    <div onMouseEnter={mouseEvent} onMouseLeave={mouseEvent} className='d-flex gap-2 bg-white p-2 product-view' onClick={() => onClick(product.id)}>
       <img
         src={imagesUrl + "/150_" + firstImage}
         alt={firstImage}
@@ -53,14 +59,16 @@ const HorisontalProduct: React.FC<ProductViewProps> = ({ product, onEdit, onClic
               ? <span>Сьогодні о {date.Time}</span>
               : <span>{date.Date}</span>}
           </div>
+          {!user.isAdmin &&  <CartButton product={product} hidden={cartButtonHide}/>}
           {onEdit
             ? <EditOutlined className='ms-3 fs-4 text-danger' onClick={onCardEdit} />
-            : <FavoriteButton product={product} onChange={onFavoriteChange} />
+            : <FavoriteButton product={product} onChange={onFavoriteChange} hidden={false} />
           }
         </div>
       </div>
     </div>
-)}
+  )
+}
 
 export default HorisontalProduct;
 
