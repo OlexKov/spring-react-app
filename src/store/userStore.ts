@@ -51,6 +51,7 @@ class UserStore {
     };
     clearUserData() {
         this.user = undefined
+        this.favoritesCount = 0;
     }
 }
 // eslint-disable-next-line import/no-anonymous-default-export
