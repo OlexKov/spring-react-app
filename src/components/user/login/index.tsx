@@ -8,20 +8,21 @@ import { storageService } from '../../../services/storageService';
 import user from '../../../store/userStore'
 import { addToCartAll } from '../../../store/redux/cart/redusers/CartReduser';
 import { useDispatch } from 'react-redux';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { APP_ENV } from '../../../env';
+import GoogleLoginButton from '../../buttons/google-login-button';
+import { GoogleOutlined } from '@ant-design/icons';
 
 export const Login: React.FC = () => {
     const [remember, setRemember] = useState<boolean>(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const dispatcher = useDispatch();
 
-    const onFinish = async (loginModel: LoginModel) => {
-        const responce = await accountService.login(loginModel);
-        if (responce.status === 200) {
-            await storageService.saveToken(responce.data.token, !remember);
-            user.setUserData(responce.data.token);
-            if (user.isAuthorized && !user.isAdmin) {
+    const login = async (token: string) => {
+        await storageService.saveToken(token, !remember);
+        user.setUserData(token);
+        if (user.isAuthorized) {
+            if (!user.isAdmin) {
                 const localCard = storageService.getLocalCart();
                 if (localCard.length > 0) {
                     await accountService.addAllToCart(localCard.map(x => ({ id: x.product.id, count: x.count })))
@@ -34,6 +35,16 @@ export const Login: React.FC = () => {
             }
             navigate('/')
             message.success('Ви успішно увійшли в свій акаунт')
+        }
+        else{
+            message.success('Помилка авторизації')
+        }
+    }
+
+    const onFinish = async (loginModel: LoginModel) => {
+        const responce = await accountService.login(loginModel);
+        if (responce.status === 200) {
+            await login(responce.data.token)
         }
     }
     return (
@@ -92,15 +103,7 @@ export const Login: React.FC = () => {
                             <Button >Реєстрація</Button>
                         </Link>
                         <Link to='/fogotpassword'>Забули раполь?</Link>
-                        <GoogleLogin
-                            onSuccess={credentialResponse => {
-                                console.log(credentialResponse);
-                                navigate('/')
-                            }}
-                            onError={() => {
-                                console.log('Login Failed');
-                            }}
-                        />
+                        <GoogleLoginButton icon={<GoogleOutlined />} title='Увійти з Google' onLogin={login} />
                     </div>
                 </Form>
             </div>

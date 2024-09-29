@@ -15,6 +15,7 @@ const accountsAPIUrl = APP_ENV.ACCOUNT_API_URL;
 export const accountService = {
 
     login: (model:LoginModel) => TryError<LoginResponseModel>(()=>  axios.post<LoginResponseModel>(accountsAPIUrl + '/sign-in',  model ,formPostConfig)),
+    googleLogin: (token:LoginResponseModel) => TryError<LoginResponseModel>(()=>  axios.post<LoginResponseModel>(accountsAPIUrl + `/sign-in/google`,token)),
     register:(user:UserRegisterModel)=> TryError(()=> axios.post(accountsAPIUrl + '/sign-up', user,formPostConfig)),
 
     addFavorite:(id:number)=> TryError<number>(()=> axios.post(accountsAPIUrl + `/add-favorite/${id}`)),

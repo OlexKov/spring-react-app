@@ -1,12 +1,13 @@
 import { AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react'
-import user from '../../store/userStore'
+import user from '../../../store/userStore'
 import { message } from 'antd'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { observer } from 'mobx-react'
-import { ProductButtonProps } from '../../models/Props'
-import { accountService } from '../../services/accountService';
-import { storageService } from '../../services/storageService';
+import { ProductButtonProps } from '../../../models/Props';
+import { storageService } from '../../../services/storageService';
+import { accountService } from '../../../services/accountService';
+
 
 
 const FavoriteButton: React.FC<ProductButtonProps> = observer(({ product, onChange = () => { } }) => {

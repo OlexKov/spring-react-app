@@ -44,10 +44,9 @@ class UserStore {
                     storageService.clearFavorites();
                 }
             }
+            return
         }
-        else {
-            this.user = undefined;
-        }
+        this.user = undefined;
     };
     clearUserData() {
         this.user = undefined

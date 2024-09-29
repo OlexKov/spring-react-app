@@ -4,9 +4,9 @@ import { DateTime } from '../../../../helpers/DateTime';
 import { APP_ENV } from '../../../../env';
 import { Tag } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import FavoriteButton from '../../../favorite-button';
-import { CartButton } from '../../../add-to-cart-button';
+import { CartButton } from '../../../buttons/add-to-cart-button';
 import user from '../../../../store/userStore'
+import FavoriteButton from '../../../buttons/favorite-button';
 
 const imagesUrl = APP_ENV.SERVER_HOST + APP_ENV.IMAGES_FOLDER;
 const HorisontalProduct: React.FC<ProductViewProps> = ({ product, onEdit, onClick = () => { }, onFavoriteChange = () => { } }) => {
