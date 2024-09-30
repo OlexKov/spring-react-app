@@ -10,6 +10,7 @@ const FAVORITES_KEY: string = import.meta.env.VITE_APP_FAVORITES_KEY;
 const APP_MODE: string = import.meta.env.VITE_APP_APP_MODE;
 const CART_KEY: string = import.meta.env.VITE_APP_CART;
 const CLIENT_ID: string = import.meta.env.VITE_APP_CLIENT_ID;
+const RECAPTCHA_SITE_KEY: string = import.meta.env.VITE_APP_RECAPTCHA_SITE_KEY;
 const APP_ENV = {
     SERVER_HOST,
     CATEGORIES_API_URL,
@@ -22,7 +23,8 @@ const APP_ENV = {
     FAVORITES_KEY,
     APP_MODE,
     CART_KEY,
-    CLIENT_ID
+    CLIENT_ID,
+    RECAPTCHA_SITE_KEY
 };
 
 export { APP_ENV }
