@@ -12,28 +12,23 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { APP_ENV } from '../../../env';
 import GoogleLoginButton from '../../buttons/google-login-button';
 import { GoogleOutlined } from '@ant-design/icons';
-import { GoogleReCaptcha, GoogleReCaptchaProvider} from 'react-google-recaptcha-v3';
+import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 export const Login: React.FC = () => {
     const [remember, setRemember] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatcher = useDispatch();
-    const [loginModel, setLoginModel] = useState<LoginModel>({username:"",password:"",recaptchaToken:""});
+    const [loginModel, setLoginModel] = useState<LoginModel>();
 
     const onVerify = useCallback(async (token: string) => {
-        if (token != "") {
+        if (loginModel) {
             loginModel.recaptchaToken = token;
             const responce = await accountService.login(loginModel);
             if (responce.status === 200) {
                 await login(responce.data.token)
             }
         }
-        else {
-            message.success('reCaptcha перевірка не пройдена')
-        }
     }, [loginModel]);
-
-
 
     const login = async (token: string) => {
         await storageService.saveToken(token, !remember);
@@ -57,7 +52,7 @@ export const Login: React.FC = () => {
             message.success('Помилка авторизації')
         }
     }
-   
+
     return (
 
         <GoogleOAuthProvider clientId={APP_ENV.CLIENT_ID}>
@@ -118,7 +113,7 @@ export const Login: React.FC = () => {
                                 <Link to='/fogotpassword'>Забули раполь?</Link>
                                 <GoogleLoginButton icon={<GoogleOutlined />} title='Увійти з Google' onLogin={login} />
                             </div>
-                            <GoogleReCaptcha onVerify={onVerify}/>
+                            <GoogleReCaptcha onVerify={onVerify} />
                         </Form>
                     </div>
                 </div>

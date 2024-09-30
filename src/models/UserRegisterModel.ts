@@ -7,5 +7,6 @@ export interface UserRegisterModel {
     surname: string;
     birthdate: string;
     file: File | null;
+    recaptchaToken:string;
 }
 

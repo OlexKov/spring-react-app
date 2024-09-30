@@ -1,17 +1,30 @@
-import { Image, Button, DatePicker, Divider, Form,  Input, message, Upload, UploadFile, UploadProps } from 'antd'
+import { Image, Button, DatePicker, Divider, Form, Input, message, Upload, UploadFile, UploadProps } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { accountService } from '../../../services/accountService'
 import { UserRegisterModel } from '../../../models/UserRegisterModel'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 import { FileType, getBase64 } from '../../../helpers/common-methods'
+import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { APP_ENV } from '../../../env'
 
 export const Registration: React.FC = () => {
   const navigate = useNavigate();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [userModel, setUserModel] = useState<UserRegisterModel>();
 
+  const onVerify = useCallback(async (token: string) => {
+    if (userModel) {
+      userModel.recaptchaToken = token;
+      const responce = await accountService.register(userModel);
+      if (responce.status === 200) {
+        message.success(`Юзер "${userModel.name} ${userModel.surname}" успішно зареєстрований`)
+        navigate('/')
+      }
+    }
+  }, [userModel]);
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
@@ -32,39 +45,37 @@ export const Registration: React.FC = () => {
   );
 
   const onFinish = async (user: UserRegisterModel) => {
+
     user.id = 0;
     user.birthdate = user.birthdate;
     user.file = fileList[0]?.originFileObj || null
-    const responce = await accountService.register(user);
-    if (responce.status === 200) {
-     message.success(`Юзер "${user.name} ${user.surname}" успішно зареєстрований`)
-     navigate('/')
-    }
+    setUserModel(user);
+
   }
   return (
-    <>
+    <GoogleReCaptchaProvider reCaptchaKey={APP_ENV.RECAPTCHA_SITE_KEY}>
 
-     <div className=' w-75 mx-auto d-flex flex-column mb-4 align-items-center'>
+      <div className=' w-75 mx-auto d-flex flex-column mb-4 align-items-center'>
         <Divider className='fs-3  mb-5' orientation="left">Реєстрація</Divider>
         <Upload
-              listType="picture-circle"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={handleChange}
-            >
-              {fileList.length > 0 ? null : uploadButton}
-            </Upload>
-            {previewImage && (
-              <Image
-                wrapperStyle={{ display: 'none' }}
-                preview={{
-                  visible: previewOpen,
-                  onVisibleChange: (visible) => setPreviewOpen(visible),
-                  afterOpenChange: (visible) => !visible && setPreviewImage(''),
-                }}
-                src={previewImage}
-              />
-            )}
+          listType="picture-circle"
+          fileList={fileList}
+          onPreview={handlePreview}
+          onChange={handleChange}
+        >
+          {fileList.length > 0 ? null : uploadButton}
+        </Upload>
+        {previewImage && (
+          <Image
+            wrapperStyle={{ display: 'none' }}
+            preview={{
+              visible: previewOpen,
+              onVisibleChange: (visible) => setPreviewOpen(visible),
+              afterOpenChange: (visible) => !visible && setPreviewImage(''),
+            }}
+            src={previewImage}
+          />
+        )}
         <Form
           layout='vertical'
           style={{
@@ -76,11 +87,11 @@ export const Registration: React.FC = () => {
           onFinish={onFinish}
           className='w-100'
         >
-            <Form.Item
+          <Form.Item
             name="username"
             label="Логін"
             hasFeedback
-          
+
             rules={[
               {
                 pattern: RegExp('^[a-zA-Z](.[a-zA-Z0-9_-]*)$'),
@@ -94,12 +105,12 @@ export const Registration: React.FC = () => {
           >
             <Input placeholder="Ваш логін" showCount minLength={3} maxLength={100} />
           </Form.Item>
-          
+
           <Form.Item
             name="name"
             label="Ім'я"
             hasFeedback
-          
+
             rules={[
               {
                 pattern: RegExp('^[A-Z А-Я].*'),
@@ -219,8 +230,9 @@ export const Registration: React.FC = () => {
               <Button >Увійти</Button>
             </Link>
           </div>
+          <GoogleReCaptcha onVerify={onVerify} />
         </Form>
       </div>
-    </>
+    </GoogleReCaptchaProvider>
   )
 }
